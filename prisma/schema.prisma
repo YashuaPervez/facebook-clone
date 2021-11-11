@@ -33,7 +33,7 @@ model Token {
 
 model Profile {
   id        Int      @id @default(autoincrement())
-  displayName String?
+  displayName String
   imageURL  String?
   about     String?
   user      User @relation(fields: [userId], references: [id])
