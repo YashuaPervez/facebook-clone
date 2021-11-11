@@ -29,6 +29,12 @@ type Post {
   updatedAt: String!
 }
 
+type Profile {
+  about: String
+  displayName: String!
+  imageURL: String
+}
+
 type Query {
   getUserById(userId: Int!): User!
   getUserByUsername(username: String!): User!
@@ -50,6 +56,7 @@ type User {
   createdAt: String!
   email: String!
   id: Int!
+  profile: Profile!
   updatedAt: String!
   username: String!
   wallPosts: [Post!]

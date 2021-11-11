@@ -13,6 +13,7 @@ import { AuthenticationError } from "apollo-server-core";
 
 import { hashPassword, generateToken, authRequired } from "../utils/function";
 import { Post } from "./Post";
+import { Profile } from "./Profile";
 
 export const User = objectType({
   name: "User",
@@ -34,6 +35,20 @@ export const User = objectType({
           createdAt: post.createdAt.getTime().toString(),
           updatedAt: post.updatedAt.getTime().toString(),
         }));
+      },
+    });
+    t.nonNull.field("profile", {
+      type: Profile,
+      async resolve(parent, _args, ctx) {
+        const profile = await ctx.prisma.profile.findFirst({
+          where: { userId: parent.id },
+        });
+
+        if (!profile) {
+          throw new Error("Profile not found");
+        }
+
+        return profile;
       },
     });
   },

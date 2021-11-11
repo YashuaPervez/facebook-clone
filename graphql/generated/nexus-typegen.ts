@@ -54,6 +54,11 @@ export interface NexusGenObjects {
     title: string; // String!
     updatedAt: string; // String!
   }
+  Profile: { // root type
+    about?: string | null; // String
+    displayName: string; // String!
+    imageURL?: string | null; // String
+  }
   Query: {};
   User: { // root type
     createdAt: string; // String!
@@ -94,6 +99,11 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     updatedAt: string; // String!
   }
+  Profile: { // field return type
+    about: string | null; // String
+    displayName: string; // String!
+    imageURL: string | null; // String
+  }
   Query: { // field return type
     getUserById: NexusGenRootTypes['User']; // User!
     getUserByUsername: NexusGenRootTypes['User']; // User!
@@ -102,6 +112,7 @@ export interface NexusGenFieldTypes {
     createdAt: string; // String!
     email: string; // String!
     id: number; // Int!
+    profile: NexusGenRootTypes['Profile']; // Profile!
     updatedAt: string; // String!
     username: string; // String!
     wallPosts: NexusGenRootTypes['Post'][] | null; // [Post!]
@@ -128,6 +139,11 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     updatedAt: 'String'
   }
+  Profile: { // field return type name
+    about: 'String'
+    displayName: 'String'
+    imageURL: 'String'
+  }
   Query: { // field return type name
     getUserById: 'User'
     getUserByUsername: 'User'
@@ -136,6 +152,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'String'
     email: 'String'
     id: 'Int'
+    profile: 'Profile'
     updatedAt: 'String'
     username: 'String'
     wallPosts: 'Post'
