@@ -1,10 +1,10 @@
-import Link from "next/link";
 import withAuth from "../utils/HigherOrderFunctions/withAuth";
 
+// Components
+import ProfileForm from "../components/User/ProfileForm";
+
 type ProfileProps = {
-  user: {
-    name: string;
-  };
+  user: any;
 };
 
 const Profile: React.FC<ProfileProps> = ({ user }) => {
@@ -12,7 +12,14 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     <div>
       <div className="flex gap-4">
         <div className="w-72"></div>
-        <div className="flex-1">a</div>
+        <div className="flex-1">
+          <ProfileForm
+            user={{
+              displayName: user?.profile?.displayName,
+              about: user?.profile?.about,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
