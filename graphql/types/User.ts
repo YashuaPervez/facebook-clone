@@ -1,0 +1,301 @@
+import { UserInputError } from "apollo-server-core";
+import {
+  objectType,
+  extendType,
+  inputObjectType,
+  nonNull,
+  stringArg,
+  intArg,
+} from "nexus";
+import slugify from "slugify";
+import bcrypt from "bcryptjs";
+import { AuthenticationError } from "apollo-server-core";
+
+import { hashPassword, generateToken, authRequired } from "../utils/function";
+import { Post } from "./Post";
+
+export const User = objectType({
+  name: "User",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("username");
+    t.nonNull.string("email");
+    t.nonNull.string("createdAt");
+    t.nonNull.string("updatedAt");
+    t.list.nonNull.field("wallPosts", {
+      type: Post,
+      async resolve(parent, _args, ctx) {
+        const wallPosts = await ctx.prisma.post.findMany({
+          where: { postForId: parent.id },
+        });
+
+        return wallPosts.map((post) => ({
+          ...post,
+          createdAt: post.createdAt.getTime().toString(),
+          updatedAt: post.updatedAt.getTime().toString(),
+        }));
+      },
+    });
+  },
+});
+
+export const UserWithToken = objectType({
+  name: "UserWithToken",
+  definition(t) {
+    t.nonNull.string("token");
+    t.nonNull.field("user", { type: User });
+  },
+});
+
+export const SignupUserInputs = inputObjectType({
+  name: "SignupUserInputs",
+  definition(t) {
+    t.nonNull.string("username");
+    t.nonNull.string("email");
+    t.nonNull.string("password");
+  },
+});
+
+export const LoginUserInputs = inputObjectType({
+  name: "LoginUserInputs",
+  definition(t) {
+    t.nonNull.string("email");
+    t.nonNull.string("password");
+  },
+});
+
+export const UpdateProfileInput = inputObjectType({
+  name: "UpdateProfileInput",
+  definition(t) {
+    t.string("displayName");
+    t.string("imageURL");
+    t.string("about");
+  },
+});
+
+export const UserQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("getUserById", {
+      type: User,
+      args: {
+        userId: nonNull(intArg()),
+      },
+      async resolve(_parent, args, ctx) {
+        const { userId } = args;
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: userId },
+        });
+
+        if (!user) {
+          throw new Error("No user found with provided userId");
+        }
+        return {
+          ...user,
+          createdAt: user.createdAt.getTime().toString(),
+          updatedAt: user.updatedAt.getTime().toString(),
+        };
+      },
+    });
+
+    t.nonNull.field("getUserByUsername", {
+      type: User,
+      args: {
+        username: nonNull(stringArg()),
+      },
+      async resolve(_parent, args, ctx) {
+        const { username } = args;
+        const user = await ctx.prisma.user.findUnique({ where: { username } });
+
+        if (!user) {
+          throw new Error("No user found with provided username");
+        }
+        return {
+          ...user,
+          createdAt: user.createdAt.getTime().toString(),
+          updatedAt: user.updatedAt.getTime().toString(),
+        };
+      },
+    });
+  },
+});
+
+export const UserMutation = extendType({
+  type: "Mutation",
+  definition(t) {
+    /* ================
+    SIGN UP
+    ================= */
+    t.nonNull.field("signup", {
+      type: UserWithToken,
+      args: {
+        data: nonNull(SignupUserInputs),
+      },
+      async resolve(_parent, args, ctx) {
+        const { username, email, password } = args.data;
+
+        const hashedPassword = await hashPassword(password);
+
+        // Checking Email is available
+        const emailTaken = await ctx.prisma.user.findUnique({
+          where: {
+            email,
+          },
+        });
+        if (emailTaken) {
+          throw new UserInputError("Email already taken");
+        }
+
+        // Generating unique username
+        let usernameSuffix = null;
+        const sluggedUsername = slugify(username, {
+          lower: true,
+        });
+        let uniqueUsername = sluggedUsername;
+        let uniqueUsernameFound = false;
+
+        while (!uniqueUsernameFound) {
+          let usernameToCheck;
+          if (usernameSuffix === null) {
+            usernameToCheck = sluggedUsername;
+            usernameSuffix = 2;
+          } else {
+            usernameToCheck = `${sluggedUsername}-${usernameSuffix}`;
+            usernameSuffix++;
+          }
+          const usernameTaken = await ctx.prisma.user.findFirst({
+            where: { username: usernameToCheck },
+          });
+          if (!usernameTaken) {
+            uniqueUsername = usernameToCheck;
+            uniqueUsernameFound = true;
+          }
+        }
+
+        const user = await ctx.prisma.user.create({
+          data: {
+            username: uniqueUsername,
+            email,
+            password: hashedPassword,
+            profile: {
+              create: {
+                displayName: username,
+                imageURL:
+                  "https://www.back-tobasics.org/wp-content/uploads/2017/05/default-profile-pic.png",
+              },
+            },
+          },
+        });
+
+        const token = await generateToken(user.id);
+
+        return {
+          token,
+          user: {
+            ...user,
+            createdAt: user.createdAt.getTime().toString(),
+            updatedAt: user.updatedAt.getTime().toString(),
+          },
+        };
+      },
+    });
+
+    /* ================
+    LOGIN
+    ================= */
+    t.nonNull.field("login", {
+      type: UserWithToken,
+      args: {
+        data: nonNull(LoginUserInputs),
+      },
+      async resolve(_parent, args, ctx) {
+        const { email, password } = args.data;
+
+        const user = await ctx.prisma.user.findUnique({
+          where: {
+            email,
+          },
+        });
+        if (!user) {
+          throw new UserInputError("User with provided email do not exists");
+        }
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+          throw new UserInputError("Password for provided user do not match");
+        }
+
+        const token = await generateToken(user.id);
+
+        return {
+          token,
+          user: {
+            ...user,
+            createdAt: user.createdAt.getTime().toString(),
+            updatedAt: user.updatedAt.getTime().toString(),
+          },
+        };
+      },
+    });
+
+    /* ================
+    LOGOUT
+    ================= */
+    t.nonNull.field("logout", {
+      type: "String",
+      async resolve(_parent, _args, ctx) {
+        const { userId } = ctx.user;
+        if (!userId) {
+          authRequired(userId);
+          return "";
+        }
+
+        await ctx.prisma.token
+          .deleteMany({
+            where: {
+              userId,
+            },
+          })
+          .then(() => {});
+
+        return "Logged out successfully";
+      },
+    });
+
+    /* ================
+    UPDATE PROFILE
+    ================= */
+    t.nonNull.field("updateProfile", {
+      type: User,
+      args: {
+        data: nonNull(UpdateProfileInput),
+      },
+      async resolve(_parent, args, ctx) {
+        const { userId } = ctx.user;
+        if (!userId) {
+          throw new AuthenticationError("Authentication required");
+        }
+        const something = await ctx.prisma.profile.update({
+          where: { userId },
+          data: {
+            ...args.data,
+          },
+        });
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: userId },
+        });
+
+        if (!user) {
+          throw new Error("No user found with provided ID");
+        }
+
+        // const { password, ...restUser} = user;
+
+        return {
+          ...user,
+          createdAt: user.createdAt.getTime().toString(),
+          updatedAt: user.updatedAt.getTime().toString(),
+        };
+      },
+    });
+  },
+});
