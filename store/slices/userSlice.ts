@@ -6,9 +6,13 @@ export type UserState = {
   token: string;
 };
 
+// Payloads
 export type LoginActionPayload = {
   user: any;
   token: string;
+};
+export type UpdateProfileActionPayload = {
+  profile: any;
 };
 
 const initialState: UserState = {
@@ -34,8 +38,15 @@ const userSlice = createSlice({
         user: null,
       };
     },
+
+    updateProfile: (
+      state,
+      action: PayloadAction<UpdateProfileActionPayload>
+    ) => {
+      state.user.profile = action.payload.profile;
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateProfile } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
+import { useAppDispatch } from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -12,6 +13,7 @@ import Heading from "../../UI/Heading";
 //
 import { updateProfileSchema } from "../../../utils/schemas/userSchema";
 import { updateProfileMutation } from "../../../utils/queries/userQueries";
+import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
 
 type ProfileFormProps = {
   user: {
@@ -28,6 +30,7 @@ type UpdateProfileType = {
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [updateProfile] = useMutation(updateProfileMutation);
+  const dispatch = useAppDispatch();
 
   const form = useForm<UpdateProfileType>({
     resolver: yupResolver(updateProfileSchema),
@@ -46,7 +49,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         variables: data,
       });
 
-      console.log("data >>", response.data.updateProfile);
+      const newProfile = response.data.updateProfile.profile;
+      dispatch(
+        updateProfileAction({
+          profile: newProfile,
+        })
+      );
+
+      console.log("newProfile >>", newProfile);
     } catch (e) {
       console.log("error >>", e);
     }
