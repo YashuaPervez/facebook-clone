@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../utils/hooks/redux-store";
 // Components
 import Container from "../../UI/Container";
 import Avatar from "../../UI/Avatar";
-// import UserSearch from '../../User/UserSearch';
+import UserSearch from "../../User/UserSearch";
 
 const Navbar = () => {
   const user = useAppSelector((state) => state?.user?.user);
@@ -20,7 +20,9 @@ const Navbar = () => {
               <h1 className="text-2xl text-white font-semibold">Facebook</h1>
             </a>
           </Link>
-          <div className="ml-6">{/* <UserSearch /> */}</div>
+          <div className="ml-6">
+            <UserSearch />
+          </div>
           <div className="flex-1" />
           {isLoggedIn && (
             <Link href={`/user/${user?.username}`}>

@@ -12,3 +12,17 @@ export const updateProfileMutation = gql`
     }
   }
 `;
+
+export const searchUsersQuery = gql`
+  query SearchUser($pageNo: Int!, $query: String!) {
+    searchUsers(resultsPerPage: 8, pageNo: $pageNo, query: $query) {
+      id
+      username
+      profile {
+        displayName
+        about
+        imageURL
+      }
+    }
+  }
+`;
