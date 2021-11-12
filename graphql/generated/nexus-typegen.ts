@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./../context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * The `Upload` scalar type represents a file upload.
+     */
+    upload<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Upload";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * The `Upload` scalar type represents a file upload.
+     */
+    upload<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Upload";
+  }
+}
 
 
 declare global {
@@ -43,6 +58,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  Upload: any
 }
 
 export interface NexusGenObjects {
@@ -90,6 +106,7 @@ export interface NexusGenFieldTypes {
     logout: string; // String!
     signup: NexusGenRootTypes['UserWithToken']; // UserWithToken!
     updateProfile: NexusGenRootTypes['User']; // User!
+    updateProfilePicture: string; // String!
   }
   Post: { // field return type
     author: NexusGenRootTypes['User']; // User!
@@ -131,6 +148,7 @@ export interface NexusGenFieldTypeNames {
     logout: 'String'
     signup: 'UserWithToken'
     updateProfile: 'User'
+    updateProfilePicture: 'String'
   }
   Post: { // field return type name
     author: 'User'
@@ -178,6 +196,9 @@ export interface NexusGenArgTypes {
     }
     updateProfile: { // args
       data: NexusGenInputs['UpdateProfileInput']; // UpdateProfileInput!
+    }
+    updateProfilePicture: { // args
+      image: NexusGenScalars['Upload']; // Upload!
     }
   }
   Query: {

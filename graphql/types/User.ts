@@ -1,3 +1,5 @@
+import fs from "fs";
+import { finished } from "stream/promises";
 import {
   objectType,
   extendType,
@@ -13,6 +15,7 @@ import { AuthenticationError, UserInputError } from "apollo-server-core";
 import { hashPassword, generateToken, authRequired } from "../utils/function";
 import { Post } from "./Post";
 import { Profile } from "./Profile";
+import { Upload } from "./Upload";
 
 export const User = objectType({
   name: "User",
@@ -393,6 +396,28 @@ export const UserMutation = extendType({
           createdAt: user.createdAt.getTime().toString(),
           updatedAt: user.updatedAt.getTime().toString(),
         };
+      },
+    });
+
+    /* ================
+    UPDATE PROFILE PICTURE
+    ================= */
+    t.nonNull.field("updateProfilePicture", {
+      type: "String",
+      args: {
+        image: nonNull(Upload),
+      },
+      async resolve(_parent, args, _ctx) {
+        const { image } = args;
+
+        const { createReadStream, mimetype, filename } = await image;
+        const stream = createReadStream();
+
+        const out = fs.createWriteStream("test.png");
+        stream.pipe(out);
+        await finished(out);
+
+        return "working";
       },
     });
   },
