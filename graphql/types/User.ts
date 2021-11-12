@@ -1,4 +1,3 @@
-import { UserInputError } from "apollo-server-core";
 import {
   objectType,
   extendType,
@@ -9,7 +8,7 @@ import {
 } from "nexus";
 import slugify from "slugify";
 import bcrypt from "bcryptjs";
-import { AuthenticationError } from "apollo-server-core";
+import { AuthenticationError, UserInputError } from "apollo-server-core";
 
 import { hashPassword, generateToken, authRequired } from "../utils/function";
 import { Post } from "./Post";
@@ -54,6 +53,9 @@ export const User = objectType({
   },
 });
 
+/* ================
+RETURN TYPES
+================= */
 export const UserWithToken = objectType({
   name: "UserWithToken",
   definition(t) {
@@ -62,6 +64,9 @@ export const UserWithToken = objectType({
   },
 });
 
+/* ================
+INPUTS
+================= */
 export const SignupUserInputs = inputObjectType({
   name: "SignupUserInputs",
   definition(t) {
@@ -88,9 +93,15 @@ export const UpdateProfileInput = inputObjectType({
   },
 });
 
+/* ================
+QUERY
+================= */
 export const UserQuery = extendType({
   type: "Query",
   definition(t) {
+    /* ================
+      GET USER BY ID
+      ================= */
     t.nonNull.field("getUserById", {
       type: User,
       args: {
@@ -113,6 +124,9 @@ export const UserQuery = extendType({
       },
     });
 
+    /* ================
+      GET USER BY USERNAME
+      ================= */
     t.nonNull.field("getUserByUsername", {
       type: User,
       args: {
@@ -132,9 +146,78 @@ export const UserQuery = extendType({
         };
       },
     });
+
+    /* ================
+      SEARCH USER
+      ================= */
+    t.nonNull.list.field("searchUsers", {
+      type: User,
+      args: {
+        resultsPerPage: nonNull(intArg()),
+        pageNo: nonNull(intArg()),
+        query: nonNull(stringArg()),
+      },
+      async resolve(_parent, args, ctx) {
+        const { resultsPerPage, pageNo, query } = args;
+
+        if (query.length < 3) {
+          throw new UserInputError("Query must be atleast 3 characters long");
+        }
+        if (resultsPerPage < 1 || pageNo < 1) {
+          throw new UserInputError(
+            "Page number and results per page must be atleast 1"
+          );
+        }
+
+        const toSkip = resultsPerPage * (pageNo - 1);
+
+        //Searching for users
+        const users = await ctx.prisma.user.findMany({
+          skip: toSkip,
+          take: resultsPerPage,
+          where: {
+            OR: [
+              {
+                username: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                profile: {
+                  OR: [
+                    {
+                      displayName: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
+                    {
+                      about: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        });
+
+        return users.map((user) => ({
+          ...user,
+          createdAt: user.createdAt.getTime().toString(),
+          updatedAt: user.updatedAt.getTime().toString(),
+        }));
+      },
+    });
   },
 });
 
+/* ================
+MUTATION
+================= */
 export const UserMutation = extendType({
   type: "Mutation",
   definition(t) {

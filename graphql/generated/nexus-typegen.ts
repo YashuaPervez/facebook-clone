@@ -107,6 +107,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     getUserById: NexusGenRootTypes['User']; // User!
     getUserByUsername: NexusGenRootTypes['User']; // User!
+    searchUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   User: { // field return type
     createdAt: string; // String!
@@ -147,6 +148,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     getUserById: 'User'
     getUserByUsername: 'User'
+    searchUsers: 'User'
   }
   User: { // field return type name
     createdAt: 'String'
@@ -184,6 +186,11 @@ export interface NexusGenArgTypes {
     }
     getUserByUsername: { // args
       username: string; // String!
+    }
+    searchUsers: { // args
+      pageNo: number; // Int!
+      query: string; // String!
+      resultsPerPage: number; // Int!
     }
   }
 }

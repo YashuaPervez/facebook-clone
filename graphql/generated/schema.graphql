@@ -38,6 +38,7 @@ type Profile {
 type Query {
   getUserById(userId: Int!): User!
   getUserByUsername(username: String!): User!
+  searchUsers(pageNo: Int!, query: String!, resultsPerPage: Int!): [User]!
 }
 
 input SignupUserInputs {
