@@ -41,6 +41,16 @@ const withAuth = (
               id: true,
               title: true,
               imageURL: true,
+              author: {
+                select: {
+                  profile: {
+                    select: {
+                      displayName: true,
+                      imageURL: true,
+                    },
+                  },
+                },
+              },
             },
             orderBy: {
               createdAt: "desc",
