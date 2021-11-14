@@ -18,8 +18,6 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
     e.preventDefault();
   };
 
-  console.log("post >>", post);
-
   return (
     <Paper>
       <div className="mb-2">

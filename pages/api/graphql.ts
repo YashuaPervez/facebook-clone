@@ -1,15 +1,10 @@
 import { ApolloServer } from "apollo-server-micro";
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import { applyMiddleware } from "graphql-middleware";
 import schema from "../../graphql/schema";
 import createContext from "../../graphql/context";
-import middlewares from "../../graphql/middlewares";
 
 const apolloServer = new ApolloServer({
   schema,
-  // schema: applyMiddleware(schema, middlewares),
   context: createContext,
-  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 const startServer = apolloServer.start();
 

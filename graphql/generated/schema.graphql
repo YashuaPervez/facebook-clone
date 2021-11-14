@@ -3,7 +3,7 @@
 
 
 input CreatePostInputs {
-  imageURL: String
+  image: Upload
   title: String!
 }
 
@@ -54,7 +54,6 @@ input UpdateProfileInput {
   imageURL: String
 }
 
-"""The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 type User {

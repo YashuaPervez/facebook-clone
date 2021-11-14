@@ -1,4 +1,5 @@
-import { GraphQLUpload } from "graphql-upload";
-import { asNexusMethod } from "nexus";
+import { scalarType } from "nexus";
 
-export const Upload = asNexusMethod(GraphQLUpload, "upload");
+export const Upload = scalarType({
+    name: "Upload",
+})

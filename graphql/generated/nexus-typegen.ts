@@ -5,23 +5,8 @@
 
 
 import type { Context } from "./../context"
-import type { core } from "nexus"
-declare global {
-  interface NexusGenCustomInputMethods<TypeName extends string> {
-    /**
-     * The `Upload` scalar type represents a file upload.
-     */
-    upload<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Upload";
-  }
-}
-declare global {
-  interface NexusGenCustomOutputMethods<TypeName extends string> {
-    /**
-     * The `Upload` scalar type represents a file upload.
-     */
-    upload<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Upload";
-  }
-}
+
+
 
 
 declare global {
@@ -30,7 +15,7 @@ declare global {
 
 export interface NexusGenInputs {
   CreatePostInputs: { // input type
-    imageURL?: string | null; // String
+    image?: NexusGenScalars['Upload'] | null; // Upload
     title: string; // String!
   }
   LoginUserInputs: { // input type

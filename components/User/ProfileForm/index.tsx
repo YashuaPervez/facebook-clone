@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
@@ -12,7 +12,10 @@ import Heading from "../../UI/Heading";
 
 //
 import { updateProfileSchema } from "../../../utils/schemas/userSchema";
-import { updateProfileMutation } from "../../../utils/queries/userQueries";
+import {
+  updateProfileMutation,
+  UploadProfilePictureMutation,
+} from "../../../utils/queries/userQueries";
 import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
 
 type ProfileFormProps = {
@@ -30,6 +33,7 @@ type UpdateProfileType = {
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [updateProfile] = useMutation(updateProfileMutation);
+  const [uploadProfilePicture] = useMutation(UploadProfilePictureMutation);
   const dispatch = useAppDispatch();
 
   const form = useForm<UpdateProfileType>({
@@ -63,6 +67,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     setLoading(false);
   };
 
+  const fileChangeHandler = async (e: React.FormEvent<HTMLInputElement>) => {
+    if (!e.target || !e.target.files || !e.target.files[0]) return;
+
+    const file = e.target.files[0];
+
+    console.log("file >>", file);
+
+    try {
+      const response = await uploadProfilePicture({
+        variables: {
+          image: file,
+        },
+      });
+
+      console.log("response >>", response);
+    } catch (e) {
+      console.log("error >>", e);
+    }
+  };
+
   return (
     <Paper>
       <FormProvider {...form}>
@@ -86,6 +110,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           </Button>
         </form>
       </FormProvider>
+      <input type="file" onChange={fileChangeHandler} />
     </Paper>
   );
 };

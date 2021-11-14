@@ -2,6 +2,7 @@ import { objectType, extendType, inputObjectType, nonNull } from "nexus";
 import { AuthenticationError } from "apollo-server-core";
 
 import { User } from "./User";
+import { saveFile } from "../utils/function";
 
 export type PostType = {
   title: string;
@@ -43,7 +44,10 @@ export const CreatePostInputs = inputObjectType({
   name: "CreatePostInputs",
   definition(t) {
     t.nonNull.string("title");
-    t.string("imageURL");
+    t.field({
+      name: "image",
+      type: "Upload",
+    });
   },
 });
 
@@ -60,14 +64,17 @@ export const PostQuery = extendType({
           throw new AuthenticationError("Authentication required");
         }
 
-        const { title, imageURL } = args.data;
+        const { title, image } = args.data;
         const postObject: PostType = {
           title,
           authorId: ctx.user.userId!,
           postForId: ctx.user.userId!,
         };
-        if (imageURL) {
-          postObject.imageURL = imageURL;
+        if (image) {
+          const imageURL = await saveFile(image, "uploads/images");
+          if (imageURL) {
+            postObject.imageURL = imageURL;
+          }
         }
 
         const post = await ctx.prisma.post.create({

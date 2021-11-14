@@ -15,7 +15,6 @@ import { AuthenticationError, UserInputError } from "apollo-server-core";
 import { hashPassword, generateToken, authRequired } from "../utils/function";
 import { Post } from "./Post";
 import { Profile } from "./Profile";
-import { Upload } from "./Upload";
 
 export const User = objectType({
   name: "User",
@@ -405,7 +404,7 @@ export const UserMutation = extendType({
     t.nonNull.field("updateProfilePicture", {
       type: "String",
       args: {
-        image: nonNull(Upload),
+        image: nonNull("Upload"),
       },
       async resolve(_parent, args, _ctx) {
         const { image } = args;

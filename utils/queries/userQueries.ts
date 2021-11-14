@@ -26,3 +26,9 @@ export const searchUsersQuery = gql`
     }
   }
 `;
+
+export const UploadProfilePictureMutation = gql`
+  mutation UploadProfilePicture($image: Upload!) {
+    updateProfilePicture(image: $image)
+  }
+`;

@@ -1,13 +1,14 @@
-import React from "react";
+import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
-import { useSelector } from "react-redux";
 
 // Components
 import Paper from "../../UI/Paper";
 import Input from "../../FormElements/Input";
 import Button from "../../UI/Button";
+import FilePicker from "../../FormElements/FilePicker";
+import UploadPreview from "../../UI/UploadPreview";
 
 //
 import { createPostSchema } from "../../../utils/schemas/postScheme";
@@ -22,8 +23,10 @@ type FormValues = {
 };
 
 const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
+  const [previewURL, setPreviewURL] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const [createPost] = useMutation(createPostMutation);
-  // const { session } = useSelector((state) => state.auth.user);
 
   const form = useForm<FormValues>({
     resolver: yupResolver(createPostSchema),
@@ -38,8 +41,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
       const response = await createPost({
         variables: {
           title: data.title,
+          image: selectedFile || undefined,
         },
       });
+
+      console.log("response >>", response);
     } catch (e) {
       console.log("error >>", e);
     }
@@ -49,7 +55,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
     <Paper className={paperClassName}>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(createPostHandler)}>
-          <div className="flex items-center mb-6 pb-6 border-b border-gray-200">
+          <div className="flex items-center mb-3 pb-6 border-b border-gray-200">
             <Input
               id="title"
               placeholder="Something to say?"
@@ -60,8 +66,21 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
               Post
             </Button>
           </div>
+          {previewURL && (
+            <UploadPreview
+              previewURL={previewURL}
+              clear={() => {
+                setPreviewURL("");
+                setSelectedFile(null);
+              }}
+            />
+          )}
           <div className="flex items-center flex-wrap">
-            <Button>Add Image</Button>
+            <FilePicker
+              setPreviewURL={setPreviewURL}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+            />
           </div>
         </form>
       </FormProvider>

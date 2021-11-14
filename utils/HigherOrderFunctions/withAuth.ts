@@ -42,18 +42,13 @@ const withAuth = (
               title: true,
               imageURL: true,
             },
+            orderBy: {
+              createdAt: "desc",
+            },
           },
         },
       });
     }
-
-    // if (user) {
-    //   user = {
-    //     ...user,
-    //     createdAt: user.createdAt.toString(),
-    //     updatedAt: user.updatedAt.toString(),
-    //   };
-    // }
 
     return await handler(context, user, token);
   };
