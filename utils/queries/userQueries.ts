@@ -32,3 +32,9 @@ export const uploadProfilePictureMutation = gql`
     updateProfilePicture(image: $image)
   }
 `;
+
+export const uploadCoverImageMutation = gql`
+  mutation UploadCoverImage($image: Upload!) {
+    updateCoverImage(image: $image)
+  }
+`;

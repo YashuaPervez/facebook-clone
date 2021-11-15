@@ -15,7 +15,9 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
       <div className="flex gap-4">
         <div className="w-72">
           <ProfileImageChanger user={{ imageURL: user?.profile?.imageURL }} />
-          <CoverImageChanger />
+          <CoverImageChanger
+            user={{ coverImageURL: user?.profile?.coverImageURL }}
+          />
         </div>
         <div className="flex-1">
           <ProfileForm

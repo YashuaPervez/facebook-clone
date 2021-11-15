@@ -90,6 +90,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['UserWithToken']; // UserWithToken!
     logout: string; // String!
     signup: NexusGenRootTypes['UserWithToken']; // UserWithToken!
+    updateCoverImage: string; // String!
     updateProfile: NexusGenRootTypes['User']; // User!
     updateProfilePicture: string; // String!
   }
@@ -132,6 +133,7 @@ export interface NexusGenFieldTypeNames {
     login: 'UserWithToken'
     logout: 'String'
     signup: 'UserWithToken'
+    updateCoverImage: 'String'
     updateProfile: 'User'
     updateProfilePicture: 'String'
   }
@@ -178,6 +180,9 @@ export interface NexusGenArgTypes {
     }
     signup: { // args
       data: NexusGenInputs['SignupUserInputs']; // SignupUserInputs!
+    }
+    updateCoverImage: { // args
+      image: NexusGenScalars['Upload']; // Upload!
     }
     updateProfile: { // args
       data: NexusGenInputs['UpdateProfileInput']; // UpdateProfileInput!

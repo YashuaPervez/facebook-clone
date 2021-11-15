@@ -17,6 +17,7 @@ type Mutation {
   login(data: LoginUserInputs!): UserWithToken!
   logout: String!
   signup(data: SignupUserInputs!): UserWithToken!
+  updateCoverImage(image: Upload!): String!
   updateProfile(data: UpdateProfileInput!): User!
   updateProfilePicture(image: Upload!): String!
 }
