@@ -9,13 +9,11 @@ import Paper from "../../UI/Paper";
 import Input from "../../FormElements/Input";
 import Button from "../../UI/Button";
 import Heading from "../../UI/Heading";
+import TagList, { Tag } from "../../FormElements/TagList";
 
 //
 import { updateProfileSchema } from "../../../utils/schemas/userSchema";
-import {
-  updateProfileMutation,
-  UploadProfilePictureMutation,
-} from "../../../utils/queries/userQueries";
+import { updateProfileMutation } from "../../../utils/queries/userQueries";
 import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
 
 type ProfileFormProps = {
@@ -32,8 +30,9 @@ type UpdateProfileType = {
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState<Tag[]>([]);
+
   const [updateProfile] = useMutation(updateProfileMutation);
-  const [uploadProfilePicture] = useMutation(UploadProfilePictureMutation);
   const dispatch = useAppDispatch();
 
   const form = useForm<UpdateProfileType>({
@@ -59,32 +58,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           profile: newProfile,
         })
       );
-
-      console.log("newProfile >>", newProfile);
     } catch (e) {
       console.log("error >>", e);
     }
     setLoading(false);
-  };
-
-  const fileChangeHandler = async (e: React.FormEvent<HTMLInputElement>) => {
-    if (!e.target || !e.target.files || !e.target.files[0]) return;
-
-    const file = e.target.files[0];
-
-    console.log("file >>", file);
-
-    try {
-      const response = await uploadProfilePicture({
-        variables: {
-          image: file,
-        },
-      });
-
-      console.log("response >>", response);
-    } catch (e) {
-      console.log("error >>", e);
-    }
   };
 
   return (
@@ -105,12 +82,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
             initialValue={user.about}
             error={errors.about?.message}
           />
+          <TagList tags={tags} setTags={setTags} heading="Intersts" />
           <Button type="submit" loading={loading}>
             Update Profile
           </Button>
         </form>
       </FormProvider>
-      <input type="file" onChange={fileChangeHandler} />
     </Paper>
   );
 };

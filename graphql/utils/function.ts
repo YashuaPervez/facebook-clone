@@ -87,8 +87,9 @@ export const saveFile = async (
   if (!createReadStream || !mimetype || !filename) return null;
   const fileExtension = mimetype.split("/")[1];
 
-  if (!supportedMimes.includes(fileExtension))
+  if (!supportedMimes.includes(fileExtension)) {
     throw new Error("Unsupported file type");
+  }
 
   const stream = createReadStream();
 

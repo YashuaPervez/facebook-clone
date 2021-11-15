@@ -2,6 +2,8 @@ import withAuth from "../utils/HigherOrderFunctions/withAuth";
 
 // Components
 import ProfileForm from "../components/User/ProfileForm";
+import ProfileImageChanger from "../components/User/ProfileImageChanger";
+import CoverImageChanger from "../components/User/CoverImageChanger";
 
 type ProfileProps = {
   user: any;
@@ -11,7 +13,10 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
   return (
     <div>
       <div className="flex gap-4">
-        <div className="w-72"></div>
+        <div className="w-72">
+          <ProfileImageChanger user={{ imageURL: user?.profile?.imageURL }} />
+          <CoverImageChanger />
+        </div>
         <div className="flex-1">
           <ProfileForm
             user={{

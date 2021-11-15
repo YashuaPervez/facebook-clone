@@ -1,5 +1,3 @@
-import fs from "fs";
-import { finished } from "stream/promises";
 import {
   objectType,
   extendType,
@@ -12,7 +10,12 @@ import slugify from "slugify";
 import bcrypt from "bcryptjs";
 import { AuthenticationError, UserInputError } from "apollo-server-core";
 
-import { hashPassword, generateToken, authRequired } from "../utils/function";
+import {
+  hashPassword,
+  generateToken,
+  authRequired,
+  saveFile,
+} from "../utils/function";
 import { Post } from "./Post";
 import { Profile } from "./Profile";
 
@@ -406,17 +409,23 @@ export const UserMutation = extendType({
       args: {
         image: nonNull("Upload"),
       },
-      async resolve(_parent, args, _ctx) {
+      async resolve(_parent, args, ctx) {
+        const { userId } = ctx.user;
+        authRequired(userId);
+
         const { image } = args;
+        const imageURL = await saveFile(image, "uploads/images");
 
-        const { createReadStream, mimetype, filename } = await image;
-        const stream = createReadStream();
+        const updateUser = await ctx.prisma.profile.update({
+          data: {
+            imageURL,
+          },
+          where: {
+            userId: userId || 0,
+          },
+        });
 
-        const out = fs.createWriteStream("test.png");
-        stream.pipe(out);
-        await finished(out);
-
-        return "working";
+        return imageURL || "";
       },
     });
   },

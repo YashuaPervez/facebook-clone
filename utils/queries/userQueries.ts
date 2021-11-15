@@ -27,7 +27,7 @@ export const searchUsersQuery = gql`
   }
 `;
 
-export const UploadProfilePictureMutation = gql`
+export const uploadProfilePictureMutation = gql`
   mutation UploadProfilePicture($image: Upload!) {
     updateProfilePicture(image: $image)
   }
