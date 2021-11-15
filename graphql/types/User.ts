@@ -95,6 +95,7 @@ export const UpdateProfileInput = inputObjectType({
     t.string("displayName");
     t.string("imageURL");
     t.string("about");
+    t.string("interests");
   },
 });
 
@@ -377,10 +378,13 @@ export const UserMutation = extendType({
         if (!userId) {
           throw new AuthenticationError("Authentication required");
         }
-        const something = await ctx.prisma.profile.update({
+        const updatedUser = await ctx.prisma.profile.update({
           where: { userId },
           data: {
-            ...args.data,
+            about: args.data.about,
+            displayName: args.data.displayName || undefined,
+            imageURL: args.data.imageURL,
+            interests: args.data.interests,
           },
         });
         const user = await ctx.prisma.user.findUnique({
