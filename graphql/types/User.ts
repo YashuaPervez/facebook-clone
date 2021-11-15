@@ -428,5 +428,33 @@ export const UserMutation = extendType({
         return imageURL || "";
       },
     });
+
+    /* ================
+    UPDATE COVER IMAGE
+    ================= */
+    t.nonNull.field("updateCoverImage", {
+      type: "String",
+      args: {
+        image: nonNull("Upload"),
+      },
+      async resolve(_parent, args, ctx) {
+        const { userId } = ctx.user;
+        authRequired(userId);
+
+        const { image } = args;
+        const imageURL = await saveFile(image, "uploads/images");
+
+        const updateUser = await ctx.prisma.profile.update({
+          data: {
+            coverImageURL: imageURL,
+          },
+          where: {
+            userId: userId || 0,
+          },
+        });
+
+        return imageURL || "";
+      },
+    });
   },
 });
