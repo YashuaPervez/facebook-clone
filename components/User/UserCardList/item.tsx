@@ -2,15 +2,13 @@ import React from "react";
 
 // Components
 import Paper from "../../UI/Paper";
+import Chip from "../../UI/Chip";
 
 type UserCardItemProps = {
   user: any;
 };
 
 const UserCardItem: React.FC<UserCardItemProps> = ({ user }) => {
-  const chip =
-    "bg-blue-400 mr-2 mb-2 inline-block px-5 py-1 rounded-full text-white font-semibold cursor-pointer";
-
   return (
     <Paper className="mb-3">
       <div className="flex items-start">
@@ -22,11 +20,11 @@ const UserCardItem: React.FC<UserCardItemProps> = ({ user }) => {
           <p className="text-sm max-w-sm mb-2">{user.profile.about}</p>
           <h4 className="text-lg font-semibold mb-1">Intersts: </h4>
           <div>
-            <span className={`${chip}`}>Web</span>
-            <span className={`${chip}`}>Mobile</span>
-            <span className={`${chip}`}>This</span>
-            <span className={`${chip}`}>That</span>
-            <span className={`${chip}`}>Others</span>
+            <Chip>Web</Chip>
+            <Chip>Mobile</Chip>
+            <Chip>This</Chip>
+            <Chip>That</Chip>
+            <Chip>Others</Chip>
           </div>
         </div>
       </div>
