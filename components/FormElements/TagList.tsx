@@ -14,22 +14,31 @@ type TagListProps = {
 };
 
 const TagList: React.FC<TagListProps> = ({ tags, heading, setTags }) => {
-  const tagInputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState<string>("");
 
   const addTagHandler = () => {
-    const value = tagInputRef.current?.value;
-    if (!value) return;
+    if (!input) return;
 
-    setTags((prev) => [...prev, { value, id: uuid() }]);
-    tagInputRef.current.value = "";
+    const newTags = [...tags, { value: input, id: uuid() }];
+    setTags(newTags);
+    setInput("");
   };
 
-  const inputKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const code = e.keyCode;
-
-    if (code !== 13 && (code < 65 || code > 90)) {
-      return e.preventDefault();
+  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.match(/^[a-zA-Z ]*$/)) {
+      setInput(e.target.value);
     }
+  };
+
+  const inputKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const code = e.keyCode;
+    if (code === 13) {
+      e.preventDefault();
+    }
+  };
+
+  const inputKeyUpHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const code = e.keyCode;
     if (code === 13) {
       addTagHandler();
     }
@@ -41,6 +50,7 @@ const TagList: React.FC<TagListProps> = ({ tags, heading, setTags }) => {
       <div className="mt-1 mb-2">
         {tags.map((tag) => (
           <Chip
+            key={tag.id}
             remove={() => {
               setTags((prev) => prev.filter((t) => t.id !== tag.id));
             }}
@@ -53,8 +63,10 @@ const TagList: React.FC<TagListProps> = ({ tags, heading, setTags }) => {
         <input
           id="tag"
           placeholder="Tag"
-          ref={tagInputRef}
-          onKeyDown={inputKeyPressHandler}
+          value={input}
+          onChange={inputChangeHandler}
+          onKeyUp={inputKeyUpHandler}
+          onKeyDown={inputKeyDownHandler}
           className="bg-white border border-gray-200 outline-none py-2 px-3 rounded focus:border-blue-400 mr-2"
           autoComplete="off"
         />

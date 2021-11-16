@@ -1,13 +1,20 @@
 import { gql } from "@apollo/client";
 
 export const updateProfileMutation = gql`
-  mutation UpdateProfile($displayName: String, $about: String) {
-    updateProfile(data: { displayName: $displayName, about: $about }) {
+  mutation UpdateProfile(
+    $displayName: String
+    $about: String
+    $interests: String
+  ) {
+    updateProfile(
+      data: { displayName: $displayName, about: $about, interests: $interests }
+    ) {
       id
       profile {
         displayName
         imageURL
         about
+        interests
       }
     }
   }

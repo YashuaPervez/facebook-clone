@@ -24,6 +24,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             user={{
               displayName: user?.profile?.displayName,
               about: user?.profile?.about,
+              interests: user?.profile?.interests,
             }}
           />
         </div>

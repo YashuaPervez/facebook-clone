@@ -6,5 +6,6 @@ export const Profile = objectType({
     t.nonNull.string("displayName");
     t.nullable.string("about");
     t.nullable.string("imageURL");
+    t.nullable.string("interests");
   },
 });

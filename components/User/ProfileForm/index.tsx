@@ -3,6 +3,7 @@ import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
 import { useAppDispatch } from "../../../utils/hooks/redux-store";
+import { v4 as uuid } from "uuid";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -20,6 +21,7 @@ type ProfileFormProps = {
   user: {
     about: string;
     displayName: string;
+    interests: string;
   };
 };
 
@@ -30,7 +32,9 @@ type UpdateProfileType = {
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>(
+    user.interests.split(",").map((t) => ({ value: t, id: uuid() }))
+  );
 
   const [updateProfile] = useMutation(updateProfileMutation);
   const dispatch = useAppDispatch();
@@ -47,11 +51,16 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     data
   ) => {
     setLoading(true);
+    const updateObject: any = {
+      ...data,
+    };
+    if (tags.length !== 0)
+      updateObject.interests = tags.map((tag) => tag.value).join(",");
+
     try {
       const response = await updateProfile({
-        variables: data,
+        variables: updateObject,
       });
-
       const newProfile = response.data.updateProfile.profile;
       dispatch(
         updateProfileAction({

@@ -35,6 +35,7 @@ type Profile {
   about: String
   displayName: String!
   imageURL: String
+  interests: String
 }
 
 type Query {
@@ -53,6 +54,7 @@ input UpdateProfileInput {
   about: String
   displayName: String
   imageURL: String
+  interests: String
 }
 
 scalar Upload

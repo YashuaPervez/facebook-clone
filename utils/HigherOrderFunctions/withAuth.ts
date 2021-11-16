@@ -35,6 +35,7 @@ const withAuth = (
               displayName: true,
               imageURL: true,
               coverImageURL: true,
+              interests: true,
             },
           },
           myPosts: {
