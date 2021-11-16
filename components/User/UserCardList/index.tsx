@@ -44,9 +44,11 @@ const UserCardList: React.FC<UserCardListProps> = ({ query }) => {
 
   return (
     <div>
-      {users.map((user: any) => (
-        <UserCardItem user={user} key={user.id} />
-      ))}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        users.map((user: any) => <UserCardItem user={user} key={user.id} />)
+      )}
     </div>
   );
 };

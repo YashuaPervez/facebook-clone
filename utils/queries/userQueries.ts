@@ -29,6 +29,7 @@ export const searchUsersQuery = gql`
         displayName
         about
         imageURL
+        interests
       }
     }
   }
