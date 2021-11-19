@@ -73,6 +73,18 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           id: true,
           title: true,
           imageURL: true,
+          author: {
+            select: {
+              username: true,
+              email: true,
+              profile: {
+                select: {
+                  displayName: true,
+                  imageURL: true,
+                },
+              },
+            },
+          },
         },
       },
     },

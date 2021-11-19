@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -21,20 +22,26 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
     <Paper>
       <div className="mb-2">
-        <div className="flex items-center mb-3">
-          <Avatar src={post?.author?.profile?.imageURL} />
-          <h4 className="ml-3 text-md font-semibold">
-            {post?.author?.profile?.displayName || "Anonymous"}
-          </h4>
-        </div>
+        <Link href={`/user/${post?.author?.username}`}>
+          <a>
+            <div className="flex items-center mb-3">
+              <Avatar src={post?.author?.profile?.imageURL} />
+              <h4 className="ml-3 text-md font-semibold">
+                {post?.author?.profile?.displayName || "Anonymous"}
+              </h4>
+            </div>
+          </a>
+        </Link>
         <h3>{post.title}</h3>
       </div>
-      <div className="-mx-4 h-60 overflow-hidden flex items-center justify-center mb-2">
-        <img
-          src={post.imageURL}
-          className="min-w-full min-h-full object-cover"
-        />
-      </div>
+      {post.imageURL && (
+        <div className="-mx-4 h-60 overflow-hidden flex items-center justify-center mb-2">
+          <img
+            src={post.imageURL}
+            className="min-w-full min-h-full object-cover"
+          />
+        </div>
+      )}
       {/* <form onSubmit={commentHandler}>
         <div className='flex items-center'>
           <Input

@@ -45,6 +45,8 @@ const withAuth = (
               imageURL: true,
               author: {
                 select: {
+                  username: true,
+                  email: true,
                   profile: {
                     select: {
                       displayName: true,

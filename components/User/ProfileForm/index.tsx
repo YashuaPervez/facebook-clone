@@ -33,7 +33,7 @@ type UpdateProfileType = {
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState<Tag[]>(
-    user.interests.split(",").map((t) => ({ value: t, id: uuid() }))
+    user.interests?.split(",")?.map((t) => ({ value: t, id: uuid() })) || []
   );
 
   const [updateProfile] = useMutation(updateProfileMutation);

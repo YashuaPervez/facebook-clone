@@ -23,6 +23,8 @@ type FormValues = {
 };
 
 const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
+  const [loading, setLoading] = useState(false);
+
   const [previewURL, setPreviewURL] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -34,9 +36,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
   const {
     handleSubmit,
     formState: { errors },
+    reset,
   } = form;
 
   const createPostHandler: SubmitHandler<FormValues> = async (data) => {
+    setLoading(true);
     try {
       const response = await createPost({
         variables: {
@@ -45,14 +49,17 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
         },
       });
 
-      console.log("response >>", response);
+      reset();
+      setPreviewURL("");
+      setSelectedFile(null);
     } catch (e) {
       console.log("error >>", e);
     }
+    setLoading(false);
   };
 
   return (
-    <Paper className={paperClassName}>
+    <Paper className={`${paperClassName} relative`}>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(createPostHandler)}>
           <div className="flex items-center mb-3 pb-6 border-b border-gray-200">
@@ -84,6 +91,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
           </div>
         </form>
       </FormProvider>
+      {loading && (
+        <div className="absolute h-full w-full top-0 left-0 bg-gray-500 opacity-50 flex items-center justify-center">
+          <span className="text-white text-lg font-semibold">Loading...</span>
+        </div>
+      )}
     </Paper>
   );
 };
