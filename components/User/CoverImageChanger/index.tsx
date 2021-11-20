@@ -44,8 +44,10 @@ const CoverImageChanger: React.FC<CoverImageChangerProps> = ({ user }) => {
         style={{ display: "none" }}
         onChange={uploadCoverImageHandler}
       />
-      <div className="rounded overflow-hidden relative">
-        <img src={user.coverImageURL} className="w-full" />
+      <div className="rounded overflow-hidden relative h-36">
+        {user.coverImageURL && (
+          <img src={user.coverImageURL} className="w-full" />
+        )}
         <div
           className="absolute w-full h-full z-10 bg-blue-400 top-0 left-0 opacity-0 hover:opacity-90 flex items-center justify-center cursor-pointer"
           onClick={() => filePickerRef.current?.click()}
