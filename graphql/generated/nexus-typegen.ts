@@ -58,6 +58,11 @@ export interface NexusGenObjects {
     text: string; // String!
     updatedAt: string; // String!
   }
+  Like: { // root type
+    createdAt: string; // String!
+    id: number; // Int!
+    updatedAt: string; // String!
+  }
   Mutation: {};
   Post: { // root type
     createdAt: string; // String!
@@ -105,12 +110,20 @@ export interface NexusGenFieldTypes {
     text: string; // String!
     updatedAt: string; // String!
   }
+  Like: { // field return type
+    createdAt: string; // String!
+    id: number; // Int!
+    liker: NexusGenRootTypes['User']; // User!
+    post: NexusGenRootTypes['Post']; // Post!
+    updatedAt: string; // String!
+  }
   Mutation: { // field return type
     createComment: NexusGenRootTypes['Comment']; // Comment!
     createPost: NexusGenRootTypes['Post']; // Post!
     login: NexusGenRootTypes['UserWithToken']; // UserWithToken!
     logout: string; // String!
     signup: NexusGenRootTypes['UserWithToken']; // UserWithToken!
+    toggleLike: boolean; // Boolean!
     updateCoverImage: string; // String!
     updateProfile: NexusGenRootTypes['User']; // User!
     updateProfilePicture: string; // String!
@@ -121,6 +134,7 @@ export interface NexusGenFieldTypes {
     createdAt: string; // String!
     id: number; // Int!
     imageURL: string | null; // String
+    likes: Array<NexusGenRootTypes['Like'] | null>; // [Like]!
     title: string; // String!
     updatedAt: string; // String!
   }
@@ -159,12 +173,20 @@ export interface NexusGenFieldTypeNames {
     text: 'String'
     updatedAt: 'String'
   }
+  Like: { // field return type name
+    createdAt: 'String'
+    id: 'Int'
+    liker: 'User'
+    post: 'Post'
+    updatedAt: 'String'
+  }
   Mutation: { // field return type name
     createComment: 'Comment'
     createPost: 'Post'
     login: 'UserWithToken'
     logout: 'String'
     signup: 'UserWithToken'
+    toggleLike: 'Boolean'
     updateCoverImage: 'String'
     updateProfile: 'User'
     updateProfilePicture: 'String'
@@ -175,6 +197,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'String'
     id: 'Int'
     imageURL: 'String'
+    likes: 'Like'
     title: 'String'
     updatedAt: 'String'
   }
@@ -217,6 +240,9 @@ export interface NexusGenArgTypes {
     }
     signup: { // args
       data: NexusGenInputs['SignupUserInputs']; // SignupUserInputs!
+    }
+    toggleLike: { // args
+      postId: number; // Int!
     }
     updateCoverImage: { // args
       image: NexusGenScalars['Upload']; // Upload!

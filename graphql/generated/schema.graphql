@@ -21,6 +21,14 @@ input CreatePostInputs {
   title: String!
 }
 
+type Like {
+  createdAt: String!
+  id: Int!
+  liker: User!
+  post: Post!
+  updatedAt: String!
+}
+
 input LoginUserInputs {
   email: String!
   password: String!
@@ -32,6 +40,7 @@ type Mutation {
   login(data: LoginUserInputs!): UserWithToken!
   logout: String!
   signup(data: SignupUserInputs!): UserWithToken!
+  toggleLike(postId: Int!): Boolean!
   updateCoverImage(image: Upload!): String!
   updateProfile(data: UpdateProfileInput!): User!
   updateProfilePicture(image: Upload!): String!
@@ -43,6 +52,7 @@ type Post {
   createdAt: String!
   id: Int!
   imageURL: String
+  likes: [Like]!
   title: String!
   updatedAt: String!
 }

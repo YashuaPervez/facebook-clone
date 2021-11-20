@@ -3,6 +3,7 @@ import { AuthenticationError } from "apollo-server-core";
 
 import { User } from "./User";
 import { Comment } from "./Comment";
+import { Like } from "./Like";
 import { saveFile } from "../utils/function";
 
 export type PostType = {
@@ -51,6 +52,22 @@ export const Post = objectType({
           ...com,
           createdAt: com.createdAt.getTime().toString(),
           updatedAt: com.updatedAt.getTime().toString(),
+        }));
+      },
+    });
+    t.nonNull.list.field("likes", {
+      type: Like,
+      async resolve(parent, _args, ctx) {
+        const likes = await ctx.prisma.like.findMany({
+          where: {
+            postId: parent.id,
+          },
+        });
+
+        return likes.map((like) => ({
+          ...like,
+          createdAt: like.createdAt.getTime().toString(),
+          updatedAt: like.updatedAt.getTime().toString(),
         }));
       },
     });
