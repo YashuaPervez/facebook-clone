@@ -14,6 +14,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateCommentInputs: { // input type
+    postId: number; // Int!
+    text: string; // String!
+  }
   CreatePostInputs: { // input type
     image?: NexusGenScalars['Upload'] | null; // Upload
     title: string; // String!
@@ -48,6 +52,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Comment: { // root type
+    createdAt: string; // String!
+    id: number; // Int!
+    text: string; // String!
+    updatedAt: string; // String!
+  }
   Mutation: {};
   Post: { // root type
     createdAt: string; // String!
@@ -87,7 +97,16 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Comment: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    createdAt: string; // String!
+    id: number; // Int!
+    post: NexusGenRootTypes['Post']; // Post!
+    text: string; // String!
+    updatedAt: string; // String!
+  }
   Mutation: { // field return type
+    createComment: NexusGenRootTypes['Comment']; // Comment!
     createPost: NexusGenRootTypes['Post']; // Post!
     login: NexusGenRootTypes['UserWithToken']; // UserWithToken!
     logout: string; // String!
@@ -98,6 +117,7 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     author: NexusGenRootTypes['User']; // User!
+    comments: Array<NexusGenRootTypes['Comment'] | null>; // [Comment]!
     createdAt: string; // String!
     id: number; // Int!
     imageURL: string | null; // String
@@ -131,7 +151,16 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Comment: { // field return type name
+    author: 'User'
+    createdAt: 'String'
+    id: 'Int'
+    post: 'Post'
+    text: 'String'
+    updatedAt: 'String'
+  }
   Mutation: { // field return type name
+    createComment: 'Comment'
     createPost: 'Post'
     login: 'UserWithToken'
     logout: 'String'
@@ -142,6 +171,7 @@ export interface NexusGenFieldTypeNames {
   }
   Post: { // field return type name
     author: 'User'
+    comments: 'Comment'
     createdAt: 'String'
     id: 'Int'
     imageURL: 'String'
@@ -176,6 +206,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createComment: { // args
+      data: NexusGenInputs['CreateCommentInputs']; // CreateCommentInputs!
+    }
     createPost: { // args
       data: NexusGenInputs['CreatePostInputs']; // CreatePostInputs!
     }

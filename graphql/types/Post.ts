@@ -2,6 +2,7 @@ import { objectType, extendType, inputObjectType, nonNull } from "nexus";
 import { AuthenticationError } from "apollo-server-core";
 
 import { User } from "./User";
+import { Comment } from "./Comment";
 import { saveFile } from "../utils/function";
 
 export type PostType = {
@@ -35,6 +36,22 @@ export const Post = objectType({
           createdAt: author.createdAt.getTime().toString(),
           updatedAt: author.updatedAt.getTime().toString(),
         };
+      },
+    });
+    t.nonNull.list.field("comments", {
+      type: Comment,
+      async resolve(parent, _args, ctx) {
+        const comments = await ctx.prisma.comment.findMany({
+          where: {
+            postId: parent.id,
+          },
+        });
+
+        return comments.map((com) => ({
+          ...com,
+          createdAt: com.createdAt.getTime().toString(),
+          updatedAt: com.updatedAt.getTime().toString(),
+        }));
       },
     });
   },

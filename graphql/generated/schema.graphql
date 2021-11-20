@@ -2,6 +2,20 @@
 ### Do not make changes to this file directly
 
 
+type Comment {
+  author: User!
+  createdAt: String!
+  id: Int!
+  post: Post!
+  text: String!
+  updatedAt: String!
+}
+
+input CreateCommentInputs {
+  postId: Int!
+  text: String!
+}
+
 input CreatePostInputs {
   image: Upload
   title: String!
@@ -13,6 +27,7 @@ input LoginUserInputs {
 }
 
 type Mutation {
+  createComment(data: CreateCommentInputs!): Comment!
   createPost(data: CreatePostInputs!): Post!
   login(data: LoginUserInputs!): UserWithToken!
   logout: String!
@@ -24,6 +39,7 @@ type Mutation {
 
 type Post {
   author: User!
+  comments: [Comment]!
   createdAt: String!
   id: Int!
   imageURL: String
