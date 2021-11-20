@@ -1,11 +1,12 @@
 import React from "react";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 
 // Components
 import Paper from "../../UI/Paper";
 import Avatar from "../../UI/Avatar";
-// import Input from "../../FormElements/Input";
-// import IconButton from "../../UI/IconButton";
+import Input from "../../FormElements/Input";
+import IconButton from "../../UI/IconButton";
 
 //
 import { PaperPlane } from "../../icons";
@@ -14,9 +15,16 @@ type PostItemProps = {
   post: any;
 };
 
+type FormValues = {
+  comment: string;
+};
+
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
-  const commentHandler = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  const form = useForm<FormValues>();
+  const { handleSubmit } = form;
+
+  const commentHandler: SubmitHandler<FormValues> = async (data) => {
+    console.log("data >>", data);
   };
 
   return (
@@ -42,18 +50,18 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           />
         </div>
       )}
-      {/* <form onSubmit={commentHandler}>
-        <div className='flex items-center'>
-          <Input
-            id='comment'
-            placeholder='Comment'
-            className='mr-2 rounded-full'
-          />
-          <div>
-            <IconButton icon={PaperPlane} type='submit' />
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(commentHandler)}>
+          <div className="flex items-center">
+            <Input id="comment" placeholder="Comment" inline />
+            <div>
+              <IconButton type="submit">
+                <PaperPlane size={4} color={"#fff"} />
+              </IconButton>
+            </div>
           </div>
-        </div>
-      </form> */}
+        </form>
+      </FormProvider>
       {/* <div className='mt-3'>
         {post.comments ? (
           post.comments.map((comment, i) => (
