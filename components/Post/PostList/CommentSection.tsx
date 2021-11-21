@@ -24,12 +24,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   comments: c,
   postId,
 }) => {
-  const [comments, setComments] = useState<{}[]>(
-    c.map((com) => ({
-      ...com,
-      author: com.user,
-    })) || []
-  );
+  const [comments, setComments] = useState<{}[]>(c);
   const [createCommentLoader, setCreateCommentLoader] = useState(false);
 
   const form = useForm<FormValues>();
