@@ -4,7 +4,7 @@ import SignupForm from "../components/User/SignupForm";
 //
 import useAuth from "../utils/hooks/useAuth";
 
-const Login = () => {
+const Signup = () => {
   useAuth({
     redirectTo: "/",
     redirectLoggedInUser: true,
@@ -20,4 +20,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
