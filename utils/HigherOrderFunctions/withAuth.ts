@@ -46,11 +46,41 @@ const withAuth = (
               author: {
                 select: {
                   username: true,
-                  email: true,
                   profile: {
                     select: {
                       displayName: true,
                       imageURL: true,
+                    },
+                  },
+                },
+              },
+              likes: {
+                select: {
+                  user: {
+                    select: {
+                      username: true,
+                      profile: {
+                        select: {
+                          displayName: true,
+                          imageURL: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              comments: {
+                select: {
+                  text: true,
+                  user: {
+                    select: {
+                      username: true,
+                      profile: {
+                        select: {
+                          displayName: true,
+                          imageURL: true,
+                        },
+                      },
                     },
                   },
                 },
