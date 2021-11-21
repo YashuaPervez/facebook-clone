@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
@@ -12,17 +12,17 @@ import store from "../store";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [initialDone, setInitialDone] = useState<boolean>(false);
-  const { user, token } = pageProps;
+  // const [initialDone, setInitialDone] = useState<boolean>(false);
+  // const { user, token } = pageProps;
 
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
         <Layout
-          user={user}
-          token={token}
-          initialDone={initialDone}
-          setInitialDone={setInitialDone}
+        // user={user}
+        // token={token}
+        // initialDone={initialDone}
+        // setInitialDone={setInitialDone}
         >
           <Component {...pageProps} />
         </Layout>

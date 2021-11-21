@@ -9,8 +9,15 @@ import PostList from "../components/Post/PostList";
 
 //
 import friends from "../data/friends";
+import useAuth from "../utils/hooks/useAuth";
 
 const Home = () => {
+  useAuth({
+    redirectTo: "/login",
+    redirectLoggedInUser: false,
+    redirectLoggedOutUser: true,
+  });
+
   return (
     <div className="flex gap-4">
       <div className="w-72">
@@ -26,23 +33,5 @@ const Home = () => {
     </div>
   );
 };
-
-export const getServerSideProps = withAuth(async (_, user, token) => {
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      user,
-      token,
-    },
-  };
-});
 
 export default Home;
