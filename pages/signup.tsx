@@ -1,9 +1,16 @@
-import withAuth from "../utils/HigherOrderFunctions/withAuth";
-
 // Components
 import SignupForm from "../components/User/SignupForm";
 
+//
+import useAuth from "../utils/hooks/useAuth";
+
 const Login = () => {
+  useAuth({
+    redirectTo: "/",
+    redirectLoggedInUser: true,
+    redirectLoggedOutUser: false,
+  });
+
   return (
     <div className="mt-24">
       <div className="max-w-md mx-auto">
@@ -12,19 +19,5 @@ const Login = () => {
     </div>
   );
 };
-
-export const getServerSideProps = withAuth(async (_, user) => {
-  if (user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-});
 
 export default Login;
