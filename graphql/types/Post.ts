@@ -21,6 +21,23 @@ export const Post = objectType({
     t.string("imageURL");
     t.nonNull.string("createdAt");
     t.nonNull.string("updatedAt");
+    t.boolean("liked", {
+      async resolve(parent, _args, ctx) {
+        const userId = ctx.user.userId;
+        if (!userId) {
+          return null;
+        }
+
+        const liked = ctx.prisma.like.findFirst({
+          where: {
+            userId,
+            postId: parent.id,
+          },
+        });
+
+        return !!liked;
+      },
+    });
     t.nonNull.field("author", {
       type: User,
       async resolve(parent, _args, ctx) {
