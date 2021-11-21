@@ -134,6 +134,7 @@ export interface NexusGenFieldTypes {
     createdAt: string; // String!
     id: number; // Int!
     imageURL: string | null; // String
+    liked: boolean | null; // Boolean
     likes: Array<NexusGenRootTypes['Like'] | null>; // [Like]!
     title: string; // String!
     updatedAt: string; // String!
@@ -147,6 +148,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     getUserById: NexusGenRootTypes['User']; // User!
     getUserByUsername: NexusGenRootTypes['User']; // User!
+    me: NexusGenRootTypes['User']; // User!
     searchUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   User: { // field return type
@@ -197,6 +199,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'String'
     id: 'Int'
     imageURL: 'String'
+    liked: 'Boolean'
     likes: 'Like'
     title: 'String'
     updatedAt: 'String'
@@ -210,6 +213,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     getUserById: 'User'
     getUserByUsername: 'User'
+    me: 'User'
     searchUsers: 'User'
   }
   User: { // field return type name

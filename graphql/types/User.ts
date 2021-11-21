@@ -32,6 +32,9 @@ export const User = objectType({
       async resolve(parent, _args, ctx) {
         const wallPosts = await ctx.prisma.post.findMany({
           where: { postForId: parent.id },
+          orderBy: {
+            createdAt: "desc",
+          },
         });
 
         return wallPosts.map((post) => ({
@@ -216,6 +219,20 @@ export const UserQuery = extendType({
           createdAt: user.createdAt.getTime().toString(),
           updatedAt: user.updatedAt.getTime().toString(),
         }));
+      },
+    });
+
+    t.nonNull.field("me", {
+      type: User,
+      async resolve(_parent, _args, ctx) {
+        const userId = ctx.user.userId;
+        authRequired(userId);
+
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: userId || 0 },
+        });
+
+        return user;
       },
     });
   },

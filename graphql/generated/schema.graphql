@@ -52,6 +52,7 @@ type Post {
   createdAt: String!
   id: Int!
   imageURL: String
+  liked: Boolean
   likes: [Like]!
   title: String!
   updatedAt: String!
@@ -67,6 +68,7 @@ type Profile {
 type Query {
   getUserById(userId: Int!): User!
   getUserByUsername(username: String!): User!
+  me: User!
   searchUsers(pageNo: Int!, query: String!, resultsPerPage: Int!): [User]!
 }
 

@@ -15,3 +15,58 @@ export const loginMutation = gql`
     }
   }
 `;
+
+export const getUserProfileQuery = gql`
+  query {
+    me {
+      id
+      username
+      email
+      profile {
+        displayName
+        imageURL
+        about
+        interests
+      }
+      wallPosts {
+        id
+        title
+        imageURL
+        createdAt
+        liked
+        author {
+          id
+          username
+          profile {
+            displayName
+            imageURL
+          }
+        }
+        comments {
+          id
+          text
+          createdAt
+          author {
+            id
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+        }
+        likes {
+          createdAt
+          liker {
+            id
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+        }
+      }
+    }
+  }
+`;
