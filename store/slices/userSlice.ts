@@ -1,18 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User, Profile } from "../../typeDefs";
+
+interface SliceUser extends Omit<User, "wallPosts"> {}
 
 export type UserState = {
   isLoggedIn: boolean;
-  user: any;
+  user: SliceUser | null;
   token: string;
 };
 
 // Payloads
 export type LoginActionPayload = {
-  user: any;
+  user: SliceUser;
   token: string;
 };
 export type UpdateProfileActionPayload = {
-  profile: any;
+  profile: Profile;
 };
 
 const initialState: UserState = {
@@ -43,7 +46,9 @@ const userSlice = createSlice({
       state,
       action: PayloadAction<UpdateProfileActionPayload>
     ) => {
-      state.user.profile = action.payload.profile;
+      if (state.user) {
+        state.user.profile = action.payload.profile;
+      }
     },
   },
 });

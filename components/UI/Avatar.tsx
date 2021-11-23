@@ -1,5 +1,5 @@
 type AvatarProps = {
-  src: string;
+  src?: string;
   size?: "sm" | "md" | "lg";
   moreJSX?: React.ReactNode;
 };
@@ -25,7 +25,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, size = "sm", moreJSX }) => {
     <div
       className={`${sizeClasses} bg-gray-300 rounded-full overflow-hidden relative`}
     >
-      <img src={src} className="min-w-full min-h-full object-cover" />
+      {src && <img src={src} className="min-w-full min-h-full object-cover" />}
       {moreJSX}
     </div>
   );

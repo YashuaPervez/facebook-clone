@@ -4,8 +4,11 @@ import { useAppSelector } from "../../../utils/hooks/redux-store";
 // Components
 import PostItem from "./item";
 
+//
+import { Post } from "../../../typeDefs";
+
 type PostListProps = {
-  posts?: { id: number; title: string; imageURL: string }[];
+  posts?: Post[];
 };
 
 const PostList: React.FC<PostListProps> = ({ posts }) => {

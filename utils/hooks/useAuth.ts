@@ -8,6 +8,7 @@ import { findCookie } from "../functions";
 import { useAppDispatch } from "./redux-store";
 import { login } from "../../store/slices/userSlice";
 import { loadPosts } from "../../store/slices/postSlice";
+import { User } from "../../typeDefs";
 
 type UseAuthProps = {
   redirectTo: string;
@@ -46,7 +47,7 @@ const useAuth = ({
       }
     }
     if (!loading && data) {
-      const { wallPosts, ...rest } = data.me;
+      const { wallPosts, ...rest } = data.me as User;
       // User is logged in
       if (redirectLoggedInUser) {
         push(redirectTo);

@@ -10,9 +10,10 @@ import Avatar from "../../UI/Avatar";
 //
 import { PaperPlane } from "../../icons";
 import { createCommentMutation } from "../../../utils/queries/commentQueries";
+import { Comment } from "../../../typeDefs";
 
 type CommentSectionProps = {
-  comments: {}[];
+  comments: Comment[];
   postId: number;
 };
 
@@ -24,7 +25,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   comments: c,
   postId,
 }) => {
-  const [comments, setComments] = useState<{}[]>(c);
+  const [comments, setComments] = useState<Comment[]>(c);
   const [createCommentLoader, setCreateCommentLoader] = useState(false);
 
   const form = useForm<FormValues>();

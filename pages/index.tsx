@@ -1,5 +1,4 @@
 import React from "react";
-import withAuth from "../utils/HigherOrderFunctions/withAuth";
 
 // Components
 import Navigation from "../components/UI/Navigation";
