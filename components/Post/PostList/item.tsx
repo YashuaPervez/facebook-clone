@@ -6,8 +6,12 @@ import Paper from "../../UI/Paper";
 import Avatar from "../../UI/Avatar";
 import CommentSection from "./CommentSection";
 
+//
+import { Post } from "../../../typeDefs";
+import LikeSection from "./LikeSection";
+
 type PostItemProps = {
-  post: any;
+  post: Post;
 };
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
@@ -17,7 +21,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         <Link href={`/user/${post?.author?.username}`}>
           <a>
             <div className="flex items-center mb-3">
-              <Avatar src={post?.author?.profile?.imageURL} />
+              <Avatar src={post.author.profile.imageURL} />
               <h4 className="ml-3 text-md font-semibold">
                 {post?.author?.profile?.displayName || "Anonymous"}
               </h4>
@@ -34,6 +38,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           />
         </div>
       )}
+      <LikeSection liked={post.liked} postId={post.id} />
       <CommentSection comments={post.comments} postId={post.id} />
     </Paper>
   );

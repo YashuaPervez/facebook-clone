@@ -7,3 +7,9 @@ export const createPostMutation = gql`
     }
   }
 `;
+
+export const toggleLikeMutation = gql`
+  mutation ToggleLike($postId: Int!) {
+    toggleLike(postId: $postId)
+  }
+`;
