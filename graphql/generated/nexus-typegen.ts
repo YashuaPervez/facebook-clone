@@ -73,6 +73,7 @@ export interface NexusGenObjects {
   }
   Profile: { // root type
     about?: string | null; // String
+    coverImageURL?: string | null; // String
     displayName: string; // String!
     imageURL?: string | null; // String
     interests?: string | null; // String
@@ -141,6 +142,7 @@ export interface NexusGenFieldTypes {
   }
   Profile: { // field return type
     about: string | null; // String
+    coverImageURL: string | null; // String
     displayName: string; // String!
     imageURL: string | null; // String
     interests: string | null; // String
@@ -206,6 +208,7 @@ export interface NexusGenFieldTypeNames {
   }
   Profile: { // field return type name
     about: 'String'
+    coverImageURL: 'String'
     displayName: 'String'
     imageURL: 'String'
     interests: 'String'

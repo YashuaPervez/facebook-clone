@@ -26,7 +26,7 @@ const Profile: React.FC = () => {
       <div className="flex gap-4">
         <div className="w-72">
           <ProfileImageChanger />
-          {/* <CoverImageChanger /> */}
+          <CoverImageChanger />
         </div>
         <div className="flex-1">
           <ProfileForm />

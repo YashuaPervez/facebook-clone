@@ -27,6 +27,7 @@ export const getUserProfileQuery = gql`
         imageURL
         about
         interests
+        coverImageURL
       }
       wallPosts {
         id

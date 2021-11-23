@@ -60,6 +60,7 @@ type Post {
 
 type Profile {
   about: String
+  coverImageURL: String
   displayName: String!
   imageURL: String
   interests: String

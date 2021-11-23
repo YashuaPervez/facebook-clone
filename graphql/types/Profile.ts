@@ -7,5 +7,6 @@ export const Profile = objectType({
     t.nullable.string("about");
     t.nullable.string("imageURL");
     t.nullable.string("interests");
+    t.nullable.string("coverImageURL");
   },
 });
