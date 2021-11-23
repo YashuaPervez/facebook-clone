@@ -2,7 +2,10 @@ import React, { ChangeEvent, useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
-import { useAppDispatch } from "../../../utils/hooks/redux-store";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../utils/hooks/redux-store";
 import { v4 as uuid } from "uuid";
 
 // Components
@@ -17,23 +20,20 @@ import { updateProfileSchema } from "../../../utils/schemas/userSchema";
 import { updateProfileMutation } from "../../../utils/queries/userQueries";
 import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
 
-type ProfileFormProps = {
-  user: {
-    about: string;
-    displayName: string;
-    interests: string;
-  };
-};
+type ProfileFormProps = {};
 
 type UpdateProfileType = {
   about: string;
   displayName: string;
 };
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
+const ProfileForm: React.FC<ProfileFormProps> = () => {
   const [loading, setLoading] = useState(false);
+  const user = useAppSelector((state) => state.user.user);
   const [tags, setTags] = useState<Tag[]>(
-    user.interests?.split(",")?.map((t) => ({ value: t, id: uuid() })) || []
+    user?.profile.interests
+      ?.split(",")
+      ?.map((t) => ({ value: t, id: uuid() })) || []
   );
 
   const [updateProfile] = useMutation(updateProfileMutation);
@@ -81,14 +81,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           <Input
             id="displayName"
             placeholder="Display Name"
-            initialValue={user.displayName}
+            initialValue={user?.profile.displayName}
             error={errors.displayName?.message}
           />
           <Input
             id="about"
             placeholder="About"
             textarea
-            initialValue={user.about}
+            initialValue={user?.profile.about}
             error={errors.about?.message}
           />
           <TagList tags={tags} setTags={setTags} heading="Intersts" />

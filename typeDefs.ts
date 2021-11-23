@@ -13,6 +13,7 @@ export interface Profile {
   about?: string;
   imageURL?: string;
   interests?: string;
+  coverImageURL?: string;
 }
 
 export interface Post {

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useMutation } from "@apollo/client";
+import { useAppSelector } from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -9,15 +10,12 @@ import Avatar from "../../UI/Avatar";
 import { Image } from "../../icons";
 import { uploadProfilePictureMutation } from "../../../utils/queries/userQueries";
 
-type ProfileImageChangerProps = {
-  user: {
-    imageURL: string;
-  };
-};
+type ProfileImageChangerProps = {};
 
-const ProfileImageChanger: React.FC<ProfileImageChangerProps> = ({ user }) => {
+const ProfileImageChanger: React.FC<ProfileImageChangerProps> = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadProfilePicture] = useMutation(uploadProfilePictureMutation);
+  const user = useAppSelector((state) => state.user.user);
 
   const openFilePicker = () => {
     fileInputRef.current?.click();
@@ -45,7 +43,7 @@ const ProfileImageChanger: React.FC<ProfileImageChangerProps> = ({ user }) => {
   return (
     <Paper className="flex flex-col items-center mb-4">
       <Avatar
-        src={user.imageURL}
+        src={user?.profile.imageURL}
         size="lg"
         moreJSX={
           <>
