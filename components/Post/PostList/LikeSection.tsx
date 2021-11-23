@@ -33,8 +33,8 @@ const LikeSection: React.FC<LikeSectionProps> = ({ liked, postId }) => {
 
   return (
     <div onClick={toggleLikeHandler} className="mb-2">
-      <IconButton className={postLiked ? "bg-blue-600 border-blue-700" : ""}>
-        <Like size={6} color="#fff" status={postLiked} altColor="#fff" />
+      <IconButton className={postLiked ? "liked-button" : ""}>
+        <Like size={6} color="#fff" status={postLiked} altColor="blue" />
       </IconButton>
     </div>
   );
