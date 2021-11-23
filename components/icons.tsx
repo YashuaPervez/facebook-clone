@@ -1,7 +1,12 @@
-type IconProps = {
+interface IconProps {
   size: number;
   color?: string;
-};
+}
+
+interface IconPropsWithStatus extends IconProps {
+  status: boolean;
+  altColor: string;
+}
 
 export const Settings: React.FC<IconProps> = ({ size, color = "#000" }) => {
   return (
@@ -248,6 +253,36 @@ export const Close: React.FC<IconProps> = ({ size, color = "#000" }) => {
       <path
         fill={color}
         d="M28.228 23.986L47.092 5.122a2.998 2.998 0 000-4.242 2.998 2.998 0 00-4.242 0L23.986 19.744 5.121.88a2.998 2.998 0 00-4.242 0 2.998 2.998 0 000 4.242l18.865 18.864L.879 42.85a2.998 2.998 0 104.242 4.241l18.865-18.864L42.85 47.091c.586.586 1.354.879 2.121.879s1.535-.293 2.121-.879a2.998 2.998 0 000-4.242L28.228 23.986z"
+      ></path>
+    </svg>
+  );
+};
+
+export const Like: React.FC<IconPropsWithStatus> = ({
+  size,
+  color = "#000",
+  status,
+  altColor,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0"
+      y="0"
+      enableBackground="new 0 0 58 58"
+      version="1.1"
+      viewBox="0 0 58 58"
+      xmlSpace="preserve"
+      width={size * 5}
+      height={size * 5}
+    >
+      <path
+        fill={status ? altColor : color}
+        d="M9.5 43c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"
+      ></path>
+      <path
+        fill={status ? altColor : color}
+        d="M56.5 35c0-2.495-1.375-3.662-2.715-4.233A4.992 4.992 0 0055.5 27c0-2.757-2.243-5-5-5H36.134l.729-3.41c.973-4.549.334-9.716.116-11.191C36.461 3.906 33.372 0 30.013 0h-.239C28.178 0 25.5.909 25.5 7c0 14.821-6.687 15-7 15h-1v-2h-16v38h16v-2h28c2.757 0 5-2.243 5-5a4.98 4.98 0 00-1.069-3.087A5.008 5.008 0 0053.5 43a4.98 4.98 0 00-1.069-3.087A5.008 5.008 0 0056.5 35zm-53 21V22h12v34h-12z"
       ></path>
     </svg>
   );
