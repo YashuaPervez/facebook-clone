@@ -64,6 +64,8 @@ type Profile {
   displayName: String!
   imageURL: String
   interests: String
+  location: String
+  workPlace: String
 }
 
 type Query {
@@ -84,6 +86,8 @@ input UpdateProfileInput {
   displayName: String
   imageURL: String
   interests: String
+  location: String
+  workPlace: String
 }
 
 scalar Upload

@@ -14,6 +14,8 @@ export interface Profile {
   imageURL?: string;
   interests?: string;
   coverImageURL?: string;
+  location?: string;
+  workPlace?: string;
 }
 
 export interface Post {

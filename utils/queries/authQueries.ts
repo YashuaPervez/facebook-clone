@@ -28,6 +28,8 @@ export const getUserProfileQuery = gql`
         about
         interests
         coverImageURL
+        workPlace
+        location
       }
       wallPosts {
         id

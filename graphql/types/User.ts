@@ -99,6 +99,8 @@ export const UpdateProfileInput = inputObjectType({
     t.string("imageURL");
     t.string("about");
     t.string("interests");
+    t.string("workPlace");
+    t.string("location");
   },
 });
 
@@ -402,6 +404,8 @@ export const UserMutation = extendType({
             displayName: args.data.displayName || undefined,
             imageURL: args.data.imageURL,
             interests: args.data.interests,
+            workPlace: args.data.workPlace,
+            location: args.data.location,
           },
         });
         const user = await ctx.prisma.user.findUnique({

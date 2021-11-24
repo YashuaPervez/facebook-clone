@@ -8,5 +8,7 @@ export const Profile = objectType({
     t.nullable.string("imageURL");
     t.nullable.string("interests");
     t.nullable.string("coverImageURL");
+    t.nullable.string("workPlace");
+    t.nullable.string("location");
   },
 });

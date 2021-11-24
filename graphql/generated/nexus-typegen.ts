@@ -36,6 +36,8 @@ export interface NexusGenInputs {
     displayName?: string | null; // String
     imageURL?: string | null; // String
     interests?: string | null; // String
+    location?: string | null; // String
+    workPlace?: string | null; // String
   }
 }
 
@@ -77,6 +79,8 @@ export interface NexusGenObjects {
     displayName: string; // String!
     imageURL?: string | null; // String
     interests?: string | null; // String
+    location?: string | null; // String
+    workPlace?: string | null; // String
   }
   Query: {};
   User: { // root type
@@ -146,6 +150,8 @@ export interface NexusGenFieldTypes {
     displayName: string; // String!
     imageURL: string | null; // String
     interests: string | null; // String
+    location: string | null; // String
+    workPlace: string | null; // String
   }
   Query: { // field return type
     getUserById: NexusGenRootTypes['User']; // User!
@@ -212,6 +218,8 @@ export interface NexusGenFieldTypeNames {
     displayName: 'String'
     imageURL: 'String'
     interests: 'String'
+    location: 'String'
+    workPlace: 'String'
   }
   Query: { // field return type name
     getUserById: 'User'

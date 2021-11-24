@@ -5,9 +5,17 @@ export const updateProfileMutation = gql`
     $displayName: String
     $about: String
     $interests: String
+    $location: String
+    $workPlace: String
   ) {
     updateProfile(
-      data: { displayName: $displayName, about: $about, interests: $interests }
+      data: {
+        displayName: $displayName
+        about: $about
+        interests: $interests
+        workPlace: $workPlace
+        location: $location
+      }
     ) {
       id
       profile {

@@ -25,6 +25,8 @@ type ProfileFormProps = {};
 type UpdateProfileType = {
   about: string;
   displayName: string;
+  location: string;
+  workPlace: string;
 };
 
 const ProfileForm: React.FC<ProfileFormProps> = () => {
@@ -91,6 +93,22 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
             initialValue={user?.profile.about}
             error={errors.about?.message}
           />
+          <div className="flex items-center mb-2">
+            <Input
+              id="workPlace"
+              placeholder="Work Place"
+              inline
+              initialValue={user?.profile.workPlace}
+              error={errors.workPlace?.message}
+            />
+            <Input
+              id="location"
+              placeholder="Live in"
+              inline
+              initialValue={user?.profile.location}
+              error={errors.location?.message}
+            />
+          </div>
           <TagList tags={tags} setTags={setTags} heading="Intersts" />
           <Button type="submit" loading={loading}>
             Update Profile
