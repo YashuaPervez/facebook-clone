@@ -54,3 +54,61 @@ export const uploadCoverImageMutation = gql`
     updateCoverImage(image: $image)
   }
 `;
+
+export const getUserByUsernameQuery = gql`
+  query GetUserByUsername($username: String!) {
+    getUserByUsername(username: $username) {
+      id
+      username
+      email
+      profile {
+        displayName
+        imageURL
+        about
+        interests
+        coverImageURL
+        workPlace
+        location
+      }
+      wallPosts {
+        id
+        title
+        imageURL
+        createdAt
+        liked
+        author {
+          id
+          username
+          profile {
+            displayName
+            imageURL
+          }
+        }
+        comments {
+          id
+          text
+          createdAt
+          author {
+            id
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+        }
+        likes {
+          createdAt
+          liker {
+            id
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+        }
+      }
+    }
+  }
+`;

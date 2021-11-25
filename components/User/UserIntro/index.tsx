@@ -7,10 +7,14 @@ import Paper from "../../UI/Paper";
 import { GraduationCap, Suitcase, LocationMarker } from "../../icons";
 
 type UserIntroProps = {
+  user: {
+    workPlace?: string;
+    location?: string;
+  };
   paperClassName?: string;
 };
 
-const UserIntro: React.FC<UserIntroProps> = ({ paperClassName }) => {
+const UserIntro: React.FC<UserIntroProps> = ({ paperClassName, user }) => {
   const listItem = "flex items-center mb-4";
   const iconWrapper = "mr-3";
 
@@ -22,19 +26,13 @@ const UserIntro: React.FC<UserIntroProps> = ({ paperClassName }) => {
           <div className={`${iconWrapper}`}>
             <Suitcase size={5.5} />
           </div>
-          Works at&nbsp;<span className="font-bold">Tech Stacker</span>
-        </li>
-        <li className={`${listItem}`}>
-          <div className={`${iconWrapper}`}>
-            <GraduationCap size={5.5} />
-          </div>
-          Studied at&nbsp;<span className="font-bold">FIC Malir</span>
+          Works at&nbsp;<span className="font-bold">{user.workPlace}</span>
         </li>
         <li className={`${listItem}`}>
           <div className={`${iconWrapper}`}>
             <LocationMarker size={5.5} />
           </div>
-          Lives in&nbsp;<span className="font-bold">Karachi</span>
+          Lives in&nbsp;<span className="font-bold">{user.location}</span>
         </li>
       </ul>
     </Paper>

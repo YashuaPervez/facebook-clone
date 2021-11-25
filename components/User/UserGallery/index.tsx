@@ -7,9 +7,13 @@ import Gallery from "../../UI/Gallery";
 
 type UserGalleryProps = {
   paperClassName?: string;
+  images: string[];
 };
 
-const UserGallery: React.FC<UserGalleryProps> = ({ paperClassName }) => {
+const UserGallery: React.FC<UserGalleryProps> = ({
+  paperClassName,
+  images,
+}) => {
   return (
     <Paper className={paperClassName}>
       <div className="flex items-center">
@@ -18,7 +22,7 @@ const UserGallery: React.FC<UserGalleryProps> = ({ paperClassName }) => {
           <a className="text-sm text-blue-400">View All</a>
         </Link>
       </div>
-      <Gallery />
+      <Gallery images={images} />
     </Paper>
   );
 };

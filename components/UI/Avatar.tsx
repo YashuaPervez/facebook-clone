@@ -1,6 +1,6 @@
 type AvatarProps = {
   src?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   moreJSX?: React.ReactNode;
 };
 
@@ -15,6 +15,9 @@ const Avatar: React.FC<AvatarProps> = ({ src, size = "sm", moreJSX }) => {
       break;
     case "lg":
       sizeClasses = "h-36 w-36";
+      break;
+    case "xl":
+      sizeClasses = "h-48 w-48";
       break;
     default:
       sizeClasses = "h-10 w-10";
