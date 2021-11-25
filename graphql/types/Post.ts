@@ -28,7 +28,7 @@ export const Post = objectType({
           return null;
         }
 
-        const liked = ctx.prisma.like.findFirst({
+        const liked = await ctx.prisma.like.findFirst({
           where: {
             userId,
             postId: parent.id,
