@@ -14,6 +14,10 @@ type PostListProps = {
 const PostList: React.FC<PostListProps> = ({ posts }) => {
   let wallPosts = useAppSelector((state) => state.post.posts);
 
+  if (posts) {
+    wallPosts = posts;
+  }
+
   return (
     <div className="grid grid-col-1 gap-5">
       {wallPosts.length ? (
