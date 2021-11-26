@@ -60,6 +60,10 @@ export interface NexusGenObjects {
     text: string; // String!
     updatedAt: string; // String!
   }
+  CommentWithMoreAvailable: { // root type
+    comments: Array<NexusGenRootTypes['Comment'] | null>; // [Comment]!
+    moreAvailable: boolean; // Boolean!
+  }
   Like: { // root type
     createdAt: string; // String!
     id: number; // Int!
@@ -115,6 +119,10 @@ export interface NexusGenFieldTypes {
     text: string; // String!
     updatedAt: string; // String!
   }
+  CommentWithMoreAvailable: { // field return type
+    comments: Array<NexusGenRootTypes['Comment'] | null>; // [Comment]!
+    moreAvailable: boolean; // Boolean!
+  }
   Like: { // field return type
     createdAt: string; // String!
     id: number; // Int!
@@ -135,7 +143,7 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     author: NexusGenRootTypes['User']; // User!
-    comments: Array<NexusGenRootTypes['Comment'] | null>; // [Comment]!
+    comments: NexusGenRootTypes['CommentWithMoreAvailable']; // CommentWithMoreAvailable!
     createdAt: string; // String!
     id: number; // Int!
     imageURL: string | null; // String
@@ -154,6 +162,7 @@ export interface NexusGenFieldTypes {
     workPlace: string | null; // String
   }
   Query: { // field return type
+    getPostComments: NexusGenRootTypes['CommentWithMoreAvailable']; // CommentWithMoreAvailable!
     getUserById: NexusGenRootTypes['User']; // User!
     getUserByUsername: NexusGenRootTypes['User']; // User!
     me: NexusGenRootTypes['User']; // User!
@@ -183,6 +192,10 @@ export interface NexusGenFieldTypeNames {
     text: 'String'
     updatedAt: 'String'
   }
+  CommentWithMoreAvailable: { // field return type name
+    comments: 'Comment'
+    moreAvailable: 'Boolean'
+  }
   Like: { // field return type name
     createdAt: 'String'
     id: 'Int'
@@ -203,7 +216,7 @@ export interface NexusGenFieldTypeNames {
   }
   Post: { // field return type name
     author: 'User'
-    comments: 'Comment'
+    comments: 'CommentWithMoreAvailable'
     createdAt: 'String'
     id: 'Int'
     imageURL: 'String'
@@ -222,6 +235,7 @@ export interface NexusGenFieldTypeNames {
     workPlace: 'String'
   }
   Query: { // field return type name
+    getPostComments: 'CommentWithMoreAvailable'
     getUserById: 'User'
     getUserByUsername: 'User'
     me: 'User'
@@ -270,6 +284,10 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getPostComments: { // args
+      pageNumber: number; // Int!
+      postId: number; // Int!
+    }
     getUserById: { // args
       userId: number; // Int!
     }

@@ -1,4 +1,10 @@
-import { objectType, extendType, inputObjectType, nonNull } from "nexus";
+import {
+  objectType,
+  extendType,
+  inputObjectType,
+  nonNull,
+  intArg,
+} from "nexus";
 
 import { User } from "./User";
 import { Post } from "./Post";
@@ -62,6 +68,20 @@ export const Comment = objectType({
   },
 });
 
+/* ================
+RETURN TYPES
+================= */
+export const CommentWithMoreAvailable = objectType({
+  name: "CommentWithMoreAvailable",
+  definition(t) {
+    t.nonNull.boolean("moreAvailable");
+    t.nonNull.list.field("comments", { type: Comment });
+  },
+});
+
+/* ================
+INPUTS
+================= */
 export const CreateCommentInputs = inputObjectType({
   name: "CreateCommentInputs",
   definition(t) {
@@ -71,6 +91,49 @@ export const CreateCommentInputs = inputObjectType({
 });
 
 export const CommentQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("getPostComments", {
+      type: CommentWithMoreAvailable,
+      args: {
+        postId: nonNull(intArg()),
+        pageNumber: nonNull(intArg()),
+      },
+      async resolve(_parent, args, ctx) {
+        const { postId, pageNumber } = args;
+        const post = await ctx.prisma.post.findUnique({
+          where: { id: postId },
+        });
+        if (!post) {
+          throw new Error("Post with provided ID not found");
+        }
+
+        const commentsPerPage = 3;
+        const toSkip = commentsPerPage * (pageNumber - 1);
+        const comments = await ctx.prisma.comment.findMany({
+          where: { postId },
+          take: commentsPerPage,
+          skip: toSkip,
+          orderBy: { createdAt: "desc" },
+        });
+        const totalComments = await ctx.prisma.comment.count({
+          where: { postId },
+        });
+
+        return {
+          moreAvailable: totalComments - toSkip - commentsPerPage > 0,
+          comments: comments.map((com) => ({
+            ...com,
+            createdAt: com.createdAt.getTime().toString(),
+            updatedAt: com.updatedAt.getTime().toString(),
+          })),
+        };
+      },
+    });
+  },
+});
+
+export const CommentMutations = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("createComment", {

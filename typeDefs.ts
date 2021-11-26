@@ -26,7 +26,10 @@ export interface Post {
   updatedAt: string;
   liked: boolean;
   author: User;
-  comments: Comment[];
+  comments: {
+    comments: Comment[];
+    moreAvailable: boolean;
+  };
   likes: Like[];
 }
 

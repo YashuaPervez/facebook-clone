@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
-import { useMutation } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 
 // Components
 import Input from "../../FormElements/Input";
@@ -9,11 +9,17 @@ import Avatar from "../../UI/Avatar";
 
 //
 import { PaperPlane } from "../../icons";
-import { createCommentMutation } from "../../../utils/queries/commentQueries";
+import {
+  createCommentMutation,
+  getPostCommentsQuery,
+} from "../../../utils/queries/commentQueries";
 import { Comment } from "../../../typeDefs";
 
 type CommentSectionProps = {
-  comments: Comment[];
+  comments: {
+    comments: Comment[];
+    moreAvailable: boolean;
+  };
   postId: number;
 };
 
@@ -25,13 +31,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   comments: c,
   postId,
 }) => {
-  const [comments, setComments] = useState<Comment[]>(c);
-  const [createCommentLoader, setCreateCommentLoader] = useState(false);
+  const [comments, setComments] = useState<Comment[]>(c.comments);
+  const [createCommentLoader, setCreateCommentLoader] =
+    useState<boolean>(false);
+  const [moreAvailable, setMoreAvailable] = useState<boolean>(c.moreAvailable);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const form = useForm<FormValues>();
   const { handleSubmit, reset } = form;
 
   const [createComment] = useMutation(createCommentMutation);
+  const [getPostComments, { loading, error, data }] =
+    useLazyQuery(getPostCommentsQuery);
 
   const commentHandler: SubmitHandler<FormValues> = async (data) => {
     setCreateCommentLoader(true);
@@ -42,13 +53,46 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           text: data.comment,
         },
       });
-      setComments((prev) => [...prev, response.data.createComment]);
+      setComments((prev) => [response.data.createComment, ...prev]);
     } catch (e) {
       console.log("error >>", e);
     }
     reset();
     setCreateCommentLoader(false);
   };
+
+  const showMoreHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (moreAvailable) {
+      getPostComments({
+        variables: {
+          postId,
+          pageNumber: currentPage + 1,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && data) {
+      const moreComments = data.getPostComments.comments as Comment[];
+      const newMoreAvailable = data.getPostComments.moreAvailable;
+
+      setMoreAvailable(newMoreAvailable);
+
+      const uniqueComments = moreComments.filter((comm) => {
+        const toKeepComment = comments.every((exixting_com) => {
+          return exixting_com.id !== comm.id;
+        });
+        return toKeepComment;
+      });
+
+      setComments((prev) => [...prev, ...uniqueComments]);
+      setCurrentPage((prev) => prev + 1);
+    }
+    if (!loading && error) {
+      console.log("aaaa error >>", error);
+    }
+  }, [loading, error, data]);
 
   return (
     <>
@@ -75,6 +119,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         {comments ? (
           comments.map((comment, i) => (
             <div
+              key={comment.id}
               className={`flex items-start  ${
                 i !== 0 ? "mt-4 pt-4 border-t border-gray-100" : ""
               }`}
@@ -94,6 +139,16 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           <p>No Comments</p>
         )}
       </div>
+      {moreAvailable && (
+        <div className="mt-3">
+          <button
+            className="text-blue-500 cursor-pointer"
+            onClick={showMoreHandler}
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </>
   );
 };

@@ -85,15 +85,18 @@ export const getUserByUsernameQuery = gql`
           }
         }
         comments {
-          id
-          text
-          createdAt
-          author {
+          moreAvailable
+          comments {
             id
-            username
-            profile {
-              displayName
-              imageURL
+            text
+            createdAt
+            author {
+              id
+              username
+              profile {
+                displayName
+                imageURL
+              }
             }
           }
         }

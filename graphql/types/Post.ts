@@ -2,7 +2,7 @@ import { objectType, extendType, inputObjectType, nonNull } from "nexus";
 import { AuthenticationError } from "apollo-server-core";
 
 import { User } from "./User";
-import { Comment } from "./Comment";
+import { CommentWithMoreAvailable } from "./Comment";
 import { Like } from "./Like";
 import { saveFile } from "../utils/function";
 
@@ -56,20 +56,32 @@ export const Post = objectType({
         };
       },
     });
-    t.nonNull.list.field("comments", {
-      type: Comment,
+    t.nonNull.field("comments", {
+      type: CommentWithMoreAvailable,
       async resolve(parent, _args, ctx) {
         const comments = await ctx.prisma.comment.findMany({
           where: {
             postId: parent.id,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 3,
+        });
+        const totalComments = await ctx.prisma.comment.count({
+          where: {
+            postId: parent.id,
+          },
         });
 
-        return comments.map((com) => ({
-          ...com,
-          createdAt: com.createdAt.getTime().toString(),
-          updatedAt: com.updatedAt.getTime().toString(),
-        }));
+        return {
+          comments: comments.map((com) => ({
+            ...com,
+            createdAt: com.createdAt.getTime().toString(),
+            updatedAt: com.updatedAt.getTime().toString(),
+          })),
+          moreAvailable: totalComments > 3,
+        };
       },
     });
     t.nonNull.list.field("likes", {

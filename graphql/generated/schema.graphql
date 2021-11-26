@@ -11,6 +11,11 @@ type Comment {
   updatedAt: String!
 }
 
+type CommentWithMoreAvailable {
+  comments: [Comment]!
+  moreAvailable: Boolean!
+}
+
 input CreateCommentInputs {
   postId: Int!
   text: String!
@@ -48,7 +53,7 @@ type Mutation {
 
 type Post {
   author: User!
-  comments: [Comment]!
+  comments: CommentWithMoreAvailable!
   createdAt: String!
   id: Int!
   imageURL: String
@@ -69,6 +74,7 @@ type Profile {
 }
 
 type Query {
+  getPostComments(pageNumber: Int!, postId: Int!): CommentWithMoreAvailable!
   getUserById(userId: Int!): User!
   getUserByUsername(username: String!): User!
   me: User!
