@@ -35,11 +35,14 @@ const userSlice = createSlice({
     },
 
     logout: (state, action) => {
-      state = {
-        isLoggedIn: false,
-        token: "",
-        user: null,
-      };
+      state.isLoggedIn = false;
+      state.token = "";
+      state.user = null;
+
+      if (typeof document !== "undefined") {
+        document.cookie =
+          "fb-clone-auth-token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+      }
     },
 
     updateProfile: (
