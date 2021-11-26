@@ -12,18 +12,11 @@ import store from "../store";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // const [initialDone, setInitialDone] = useState<boolean>(false);
-  // const { user, token } = pageProps;
-
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
-        <Layout
-        // user={user}
-        // token={token}
-        // initialDone={initialDone}
-        // setInitialDone={setInitialDone}
-        >
+        <div id="backdrop-bottom-placeholder"></div>
+        <Layout>
           <Component {...pageProps} />
         </Layout>
       </ApolloProvider>
