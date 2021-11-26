@@ -21,11 +21,15 @@ const useAuth = ({
   redirectLoggedInUser = false,
   redirectLoggedOutUser = true,
 }: UseAuthProps) => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const dispatch = useAppDispatch();
 
-  const [getProfile, { data, loading, error }] =
-    useLazyQuery(getUserProfileQuery);
+  const [getProfile, { data, loading, error }] = useLazyQuery(
+    getUserProfileQuery,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
 
   useEffect(() => {
     // Check local storage for auth token
@@ -39,14 +43,14 @@ const useAuth = ({
   }, []);
 
   useEffect(() => {
-    if (!loading && error) {
+    if (!loading && error && !data) {
       // User is not logged in
       if (redirectLoggedOutUser) {
         push(redirectTo);
         return () => {};
       }
     }
-    if (!loading && data) {
+    if (!loading && data && !error) {
       const { wallPosts, ...rest } = data.me as User;
       // User is logged in
       if (redirectLoggedInUser) {
