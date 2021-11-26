@@ -234,7 +234,11 @@ export const UserQuery = extendType({
           where: { id: userId || 0 },
         });
 
-        return user;
+        return {
+          ...user,
+          createdAt: user?.createdAt.getTime().toString(),
+          updatedAt: user?.updatedAt.getTime().toString(),
+        };
       },
     });
   },

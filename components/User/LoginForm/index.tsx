@@ -3,7 +3,8 @@ import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
-import { useRouter } from "next/dist/client/router";
+import { useAppDispatch } from "../../../utils/hooks/redux-store";
+import { useRouter } from "next/router";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -13,6 +14,8 @@ import Button from "../../UI/Button";
 //
 import { loginSchema } from "../../../utils/schemas/authSchema";
 import { loginMutation } from "../../../utils/queries/authQueries";
+import { login as loginAction } from "../../../store/slices/userSlice";
+import { User } from "../../../typeDefs";
 
 type FormValues = {
   email: string;
@@ -23,6 +26,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const [login] = useMutation(loginMutation);
+  const dispatch = useAppDispatch();
   const { push } = useRouter();
 
   const form = useForm<FormValues>({
@@ -44,15 +48,20 @@ const LoginForm = () => {
       });
 
       const token = response.data.login.token;
+      const user = response.data.login.user as User;
       document.cookie = `fb-clone-auth-token=${token}`;
+      dispatch(
+        loginAction({
+          token,
+          user,
+        })
+      );
       push("/");
     } catch (e) {
       console.log("error >>", e);
     }
     setLoading(false);
   };
-
-  console.log("errors >>", errors);
 
   return (
     <Paper>

@@ -1,6 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { useAppSelector } from "../../../utils/hooks/redux-store";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../utils/hooks/redux-store";
+import { useRouter } from "next/router";
 
 // Components
 import Container from "../../UI/Container";
@@ -10,11 +14,14 @@ import IconButton from "../../UI/IconButton";
 
 //
 import { More } from "../../icons";
-import { text } from "stream/consumers";
+import { logout } from "../../../store/slices/userSlice";
 
 const Navbar = () => {
   const user = useAppSelector((state) => state?.user?.user);
   const isLoggedIn = useAppSelector((state) => state?.user?.isLoggedIn);
+
+  const dispatch = useAppDispatch();
+  const { push } = useRouter();
 
   return (
     <div className="bg-blue-400 shadow-md">
@@ -52,7 +59,8 @@ const Navbar = () => {
                       link: "#",
                       text: "Logout",
                       onClick: () => {
-                        console.log("aaaa Logout");
+                        dispatch(logout({}));
+                        push("/login");
                       },
                     },
                   ]}

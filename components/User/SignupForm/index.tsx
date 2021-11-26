@@ -54,8 +54,6 @@ const SignupForm = () => {
     setLoading(false);
   };
 
-  console.log("errors >>", errors);
-
   return (
     <Paper>
       <h1 className="text-3xl font-bold mb-6 text-blue-500">Sign Up</h1>
