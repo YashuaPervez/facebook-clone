@@ -8,10 +8,14 @@ type Backdrop = {
 const Backdrop: React.FC<Backdrop> = ({ onClick }) => {
   const portalContent = (
     <div
-      className="fixed w-screen h-screen top-0 left-0 z-40"
+      className="fixed w-screen h-screen top-0 left-0 z-30"
       onClick={onClick}
     ></div>
   );
+
+  if (typeof document === "undefined") {
+    return null;
+  }
 
   return ReactDOM.createPortal(
     portalContent,

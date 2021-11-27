@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   useAppDispatch,
@@ -13,29 +13,48 @@ import UserSearch from "../../User/UserSearch";
 import IconButton from "../../UI/IconButton";
 
 //
-import { More } from "../../icons";
+import { More, Search } from "../../icons";
 import { logout } from "../../../store/slices/userSlice";
 
 const Navbar = () => {
   const user = useAppSelector((state) => state?.user?.user);
   const isLoggedIn = useAppSelector((state) => state?.user?.isLoggedIn);
 
+  const [searchOpen, setSearchOpen] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const { push } = useRouter();
 
+  const onOpenMenu: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setSearchOpen(false);
+  };
+
   return (
-    <div className="bg-blue-400 shadow-md">
+    <div className="bg-blue-400 shadow-md relative">
       <Container>
-        <div className="h-16 flex items-center">
+        <div className="h-16 flex items-center ">
           <Link href="/">
             <a>
               <h1 className="text-2xl text-white font-semibold">Facebook</h1>
             </a>
           </Link>
-          <div className="ml-6">
+          <div className="ml-3 lg:hidden">
+            <IconButton
+              size="sm"
+              color="white"
+              onClick={() => setSearchOpen((prev) => !prev)}
+            >
+              <Search size={4.6} color="blue" />
+            </IconButton>
+          </div>
+          <div
+            className={`p-2 absolute top-16 left-0 z-40 w-full bg-white shadow-lg ${
+              searchOpen ? "block" : "hidden"
+            } lg:p-0 lg:static lg:ml-6 lg:z-0 lg:w-min lg:bg-transparent lg:shadow-none`}
+          >
             <UserSearch />
           </div>
-          <div className="flex-1" />
+          <div className="flex-1 bg-red-300" />
           {isLoggedIn && (
             <>
               <Link href={`/user/${user?.username}`}>
@@ -50,6 +69,7 @@ const Navbar = () => {
                 <IconButton
                   color="white"
                   size="sm"
+                  onClick={onOpenMenu}
                   menu={[
                     {
                       link: "/profile",
