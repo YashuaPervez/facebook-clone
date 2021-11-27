@@ -38,7 +38,7 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
   };
 
   const commonPanelClasses =
-    "w-10/12 fixed top-0 h-screen lg:w-72 lg:relative lg:content z-40 transition-all bg-white lg:bg-transparent shadow-lg lg:shadow-none";
+    "w-10/12 fixed top-0 h-screen lg:w-72 lg:relative lg:content z-40 transition-all bg-white lg:bg-transparent shadow-lg lg:shadow-none p-4 lg:p-0";
   const commonButtonClasses =
     "bg-blue-500 absolute top-1/2 transform -translate-y-1/2 h-20 w-10 p-1 shadow-lg lg:hidden";
 

@@ -41,7 +41,7 @@ const ProfileImageChanger: React.FC<ProfileImageChangerProps> = () => {
   };
 
   return (
-    <Paper className="flex flex-col items-center mb-4">
+    <Paper className="flex flex-col items-center mb-4" removeBorderMobile>
       <Avatar
         src={user?.profile.imageURL}
         size="lg"

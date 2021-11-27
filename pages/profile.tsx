@@ -1,6 +1,7 @@
 import { useAppSelector } from "../utils/hooks/redux-store";
 
 // Components
+import BodyLayout from "../components/BodyLayout";
 import ProfileForm from "../components/User/ProfileForm";
 import ProfileImageChanger from "../components/User/ProfileImageChanger";
 import CoverImageChanger from "../components/User/CoverImageChanger";
@@ -22,17 +23,17 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className="flex gap-4">
-        <div className="w-72">
+    <BodyLayout
+      leftSide={
+        <>
           <ProfileImageChanger />
           <CoverImageChanger />
-        </div>
-        <div className="flex-1">
-          <ProfileForm />
-        </div>
-      </div>
-    </div>
+        </>
+      }
+      rightSide={null}
+    >
+      <ProfileForm />
+    </BodyLayout>
   );
 };
 
