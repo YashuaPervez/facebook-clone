@@ -287,3 +287,24 @@ export const Like: React.FC<IconPropsWithStatus> = ({
     </svg>
   );
 };
+
+export const RightArrow: React.FC<IconProps> = ({ size, color = "#000" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0"
+      y="0"
+      enableBackground="new 0 0 20.633 20.633"
+      version="1.1"
+      viewBox="0 0 20.633 20.633"
+      xmlSpace="preserve"
+      width={size * 5}
+      height={size * 5}
+    >
+      <path
+        fill={color}
+        d="M15.621 9.844L5.971.195A.652.652 0 005.5 0a.664.664 0 00-.473.195l-.013.012a.677.677 0 00-.197.475v4.682c0 .178.071.348.197.471l4.481 4.482-4.481 4.479a.667.667 0 00-.197.475v4.68c0 .18.071.354.197.475l.013.01a.664.664 0 00.947 0l9.647-9.646a.671.671 0 000-.946z"
+      ></path>
+    </svg>
+  );
+};
