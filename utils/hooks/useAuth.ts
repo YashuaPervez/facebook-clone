@@ -65,7 +65,8 @@ const useAuth = ({
       );
       dispatch(
         loadPosts({
-          posts: wallPosts,
+          posts: wallPosts.posts,
+          moreAvailable: wallPosts.moreAvailable,
         })
       );
     }

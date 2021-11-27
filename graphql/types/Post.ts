@@ -1,4 +1,10 @@
-import { objectType, extendType, inputObjectType, nonNull } from "nexus";
+import {
+  objectType,
+  extendType,
+  inputObjectType,
+  nonNull,
+  intArg,
+} from "nexus";
 import { AuthenticationError } from "apollo-server-core";
 
 import { User } from "./User";
@@ -103,6 +109,20 @@ export const Post = objectType({
   },
 });
 
+/* ================
+RETURN TYPES
+================= */
+export const PostsWithMoreAvailable = objectType({
+  name: "PostsWithMoreAvailable",
+  definition(t) {
+    t.nonNull.boolean("moreAvailable");
+    t.nonNull.list.field("posts", { type: Post });
+  },
+});
+
+/* ================
+INPUTS
+================= */
 export const CreatePostInputs = inputObjectType({
   name: "CreatePostInputs",
   definition(t) {
@@ -114,9 +134,63 @@ export const CreatePostInputs = inputObjectType({
   },
 });
 
+/* ================
+QUERY
+================= */
 export const PostQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("getUserPosts", {
+      type: PostsWithMoreAvailable,
+      args: {
+        userId: nonNull(intArg()),
+        pageNumber: nonNull(intArg()),
+      },
+      async resolve(_parent, args, ctx) {
+        const { userId, pageNumber } = args;
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: userId },
+        });
+        if (!user) {
+          throw new Error("User with provided ID not found");
+        }
+
+        const postsPerPage = 3;
+        const postsToSkip = postsPerPage * (pageNumber - 1);
+        const posts = await ctx.prisma.post.findMany({
+          where: {
+            postForId: userId,
+          },
+          skip: postsToSkip,
+          take: postsPerPage,
+          orderBy: { createdAt: "desc" },
+        });
+        const totalPosts = await ctx.prisma.post.count({
+          where: { postForId: userId },
+        });
+
+        return {
+          moreAvailable: totalPosts - postsToSkip - postsPerPage > 0,
+          posts: posts.map((p) => ({
+            ...p,
+            createdAt: p.createdAt.getTime().toString(),
+            updatedAt: p.updatedAt.getTime().toString(),
+          })),
+        };
+      },
+    });
+  },
+});
+
+/* ================
+MUTATION
+================= */
+export const PostMutation = extendType({
   type: "Mutation",
   definition(t) {
+    /* ================
+    CREATE POST
+    ================= */
     t.nonNull.field("createPost", {
       type: Post,
       args: {

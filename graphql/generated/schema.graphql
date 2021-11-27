@@ -63,6 +63,11 @@ type Post {
   updatedAt: String!
 }
 
+type PostsWithMoreAvailable {
+  moreAvailable: Boolean!
+  posts: [Post]!
+}
+
 type Profile {
   about: String
   coverImageURL: String
@@ -77,6 +82,7 @@ type Query {
   getPostComments(pageNumber: Int!, postId: Int!): CommentWithMoreAvailable!
   getUserById(userId: Int!): User!
   getUserByUsername(username: String!): User!
+  getUserPosts(pageNumber: Int!, userId: Int!): PostsWithMoreAvailable!
   me: User!
   searchUsers(pageNo: Int!, query: String!, resultsPerPage: Int!): [User]!
 }
@@ -105,7 +111,7 @@ type User {
   profile: Profile!
   updatedAt: String!
   username: String!
-  wallPosts: [Post!]
+  wallPosts: PostsWithMoreAvailable!
 }
 
 type UserWithToken {

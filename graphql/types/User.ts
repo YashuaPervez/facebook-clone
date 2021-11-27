@@ -16,7 +16,7 @@ import {
   authRequired,
   saveFile,
 } from "../utils/function";
-import { Post } from "./Post";
+import { PostsWithMoreAvailable } from "./Post";
 import { Profile } from "./Profile";
 
 export const User = objectType({
@@ -27,21 +27,28 @@ export const User = objectType({
     t.nonNull.string("email");
     t.nonNull.string("createdAt");
     t.nonNull.string("updatedAt");
-    t.list.nonNull.field("wallPosts", {
-      type: Post,
+    t.nonNull.field("wallPosts", {
+      type: PostsWithMoreAvailable,
       async resolve(parent, _args, ctx) {
         const wallPosts = await ctx.prisma.post.findMany({
           where: { postForId: parent.id },
           orderBy: {
             createdAt: "desc",
           },
+          take: 3,
+        });
+        const totalPosts = await ctx.prisma.post.count({
+          where: { postForId: parent.id },
         });
 
-        return wallPosts.map((post) => ({
-          ...post,
-          createdAt: post.createdAt.getTime().toString(),
-          updatedAt: post.updatedAt.getTime().toString(),
-        }));
+        return {
+          moreAvailable: totalPosts > 3,
+          posts: wallPosts.map((post) => ({
+            ...post,
+            createdAt: post.createdAt.getTime().toString(),
+            updatedAt: post.updatedAt.getTime().toString(),
+          })),
+        };
       },
     });
     t.nonNull.field("profile", {

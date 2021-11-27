@@ -77,6 +77,10 @@ export interface NexusGenObjects {
     title: string; // String!
     updatedAt: string; // String!
   }
+  PostsWithMoreAvailable: { // root type
+    moreAvailable: boolean; // Boolean!
+    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+  }
   Profile: { // root type
     about?: string | null; // String
     coverImageURL?: string | null; // String
@@ -152,6 +156,10 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     updatedAt: string; // String!
   }
+  PostsWithMoreAvailable: { // field return type
+    moreAvailable: boolean; // Boolean!
+    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+  }
   Profile: { // field return type
     about: string | null; // String
     coverImageURL: string | null; // String
@@ -165,6 +173,7 @@ export interface NexusGenFieldTypes {
     getPostComments: NexusGenRootTypes['CommentWithMoreAvailable']; // CommentWithMoreAvailable!
     getUserById: NexusGenRootTypes['User']; // User!
     getUserByUsername: NexusGenRootTypes['User']; // User!
+    getUserPosts: NexusGenRootTypes['PostsWithMoreAvailable']; // PostsWithMoreAvailable!
     me: NexusGenRootTypes['User']; // User!
     searchUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
@@ -175,7 +184,7 @@ export interface NexusGenFieldTypes {
     profile: NexusGenRootTypes['Profile']; // Profile!
     updatedAt: string; // String!
     username: string; // String!
-    wallPosts: NexusGenRootTypes['Post'][] | null; // [Post!]
+    wallPosts: NexusGenRootTypes['PostsWithMoreAvailable']; // PostsWithMoreAvailable!
   }
   UserWithToken: { // field return type
     token: string; // String!
@@ -225,6 +234,10 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     updatedAt: 'String'
   }
+  PostsWithMoreAvailable: { // field return type name
+    moreAvailable: 'Boolean'
+    posts: 'Post'
+  }
   Profile: { // field return type name
     about: 'String'
     coverImageURL: 'String'
@@ -238,6 +251,7 @@ export interface NexusGenFieldTypeNames {
     getPostComments: 'CommentWithMoreAvailable'
     getUserById: 'User'
     getUserByUsername: 'User'
+    getUserPosts: 'PostsWithMoreAvailable'
     me: 'User'
     searchUsers: 'User'
   }
@@ -248,7 +262,7 @@ export interface NexusGenFieldTypeNames {
     profile: 'Profile'
     updatedAt: 'String'
     username: 'String'
-    wallPosts: 'Post'
+    wallPosts: 'PostsWithMoreAvailable'
   }
   UserWithToken: { // field return type name
     token: 'String'
@@ -293,6 +307,10 @@ export interface NexusGenArgTypes {
     }
     getUserByUsername: { // args
       username: string; // String!
+    }
+    getUserPosts: { // args
+      pageNumber: number; // Int!
+      userId: number; // Int!
     }
     searchUsers: { // args
       pageNo: number; // Int!

@@ -4,7 +4,10 @@ export interface User {
   email: string;
   createdAt: string;
   updatedAt: string;
-  wallPosts: Post[];
+  wallPosts: {
+    posts: Post[];
+    moreAvailable: boolean;
+  };
   profile: Profile;
 }
 

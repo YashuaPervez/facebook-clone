@@ -13,3 +13,53 @@ export const toggleLikeMutation = gql`
     toggleLike(postId: $postId)
   }
 `;
+
+export const getUserPostsQuery = gql`
+  query GetUserPosts($userId: Int!, $pageNumber: Int!) {
+    getUserPosts(userId: $userId, pageNumber: $pageNumber) {
+      moreAvailable
+      posts {
+        id
+        title
+        imageURL
+        createdAt
+        liked
+        author {
+          id
+          username
+          profile {
+            displayName
+            imageURL
+          }
+        }
+        comments {
+          moreAvailable
+          comments {
+            id
+            text
+            createdAt
+            author {
+              id
+              username
+              profile {
+                displayName
+                imageURL
+              }
+            }
+          }
+        }
+        likes {
+          createdAt
+          liker {
+            id
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+        }
+      }
+    }
+  }
+`;
