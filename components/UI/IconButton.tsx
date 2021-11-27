@@ -43,7 +43,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   switch (size) {
     case "sm":
-      sizeClasses = "h-10 w-10";
+      sizeClasses = "h-9 w-9";
       break;
   }
 

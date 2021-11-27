@@ -65,7 +65,7 @@ const Navbar = () => {
                     },
                   ]}
                 >
-                  <More size={5} />
+                  <More size={4.6} />
                 </IconButton>
               </div>
             </>

@@ -8,22 +8,21 @@ import PostItem from "./item";
 import { Post } from "../../../typeDefs";
 
 type PostListProps = {
-  posts?: Post[];
+  posts: Post[];
+  loading: Boolean;
 };
 
-const PostList: React.FC<PostListProps> = ({ posts }) => {
-  let wallPosts = useAppSelector((state) => state.post.posts);
-
-  if (posts) {
-    wallPosts = posts;
+const PostList: React.FC<PostListProps> = ({ posts, loading }) => {
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
     <div className="grid grid-col-1 gap-5">
-      {wallPosts.length ? (
-        wallPosts.map((post) => <PostItem key={post.id} post={post} />)
+      {posts?.length ? (
+        posts.map((post) => <PostItem key={post.id} post={post} />)
       ) : (
-        <p>Loading...</p>
+        <p>No posts available</p>
       )}
     </div>
   );
