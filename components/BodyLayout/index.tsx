@@ -10,12 +10,14 @@ type BodyLayoutProps = {
   children: React.ReactNode;
   leftSide: React.ReactNode;
   rightSide: React.ReactNode;
+  removePannelButtons?: boolean;
 };
 
 const BodyLayout: React.FC<BodyLayoutProps> = ({
   children,
   leftSide,
   rightSide,
+  removePannelButtons,
 }) => {
   const [leftPanelOpen, setLeftPanelOpen] = useState<boolean>(false);
   const [rightPanelOpen, setRightPanelOpen] = useState<boolean>(false);
@@ -52,14 +54,16 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
             }`}
           >
             {leftSide}
-            <button
-              className={`right-0 translate-x-full rounded-r-lg ${commonButtonClasses}`}
-              onClick={toggleLeftPanel}
-            >
-              <span>
-                <RightArrow color="#fff" size={6.4} />
-              </span>
-            </button>
+            {!removePannelButtons && (
+              <button
+                className={`right-0 translate-x-full rounded-r-lg ${commonButtonClasses}`}
+                onClick={toggleLeftPanel}
+              >
+                <span>
+                  <RightArrow color="#fff" size={6.4} />
+                </span>
+              </button>
+            )}
           </div>
         )}
         <div className="flex-1">{children}</div>
@@ -70,14 +74,16 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
             }`}
           >
             {rightSide}
-            <button
-              className={`left-0 -translate-x-full rounded-l-lg ${commonButtonClasses}`}
-              onClick={toggleRightPanel}
-            >
-              <span className="block transform rotate-180">
-                <RightArrow color="#fff" size={6.4} />
-              </span>
-            </button>
+            {!removePannelButtons && (
+              <button
+                className={`left-0 -translate-x-full rounded-l-lg ${commonButtonClasses}`}
+                onClick={toggleRightPanel}
+              >
+                <span className="block transform rotate-180">
+                  <RightArrow color="#fff" size={6.4} />
+                </span>
+              </button>
+            )}
           </div>
         )}
       </div>

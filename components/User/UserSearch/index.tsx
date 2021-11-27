@@ -31,7 +31,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ block = false }) => {
     <form onSubmit={onSearchHandler}>
       <div className="h-10 border border-blue-400 flex items-strech rounded-full overflow-hidden">
         <input
-          className={`outline-none px-4 text-sm flex-1 lg:flex-grow-0 ${
+          className={`outline-none px-4 text-sm flex-1 lg:flex-grow ${
             block ? "flex-1" : "w-36 focus:w-60 transition-all"
           }`}
           value={search}

@@ -50,7 +50,7 @@ const Navbar = () => {
           <div
             className={`p-2 absolute top-16 left-0 z-40 w-full bg-white shadow-lg ${
               searchOpen ? "block" : "hidden"
-            } lg:p-0 lg:static lg:ml-6 lg:z-0 lg:w-min lg:bg-transparent lg:shadow-none`}
+            } lg:block lg:p-0 lg:static lg:ml-6 lg:z-0 lg:w-min lg:bg-red-600 lg:shadow-none`}
           >
             <UserSearch />
           </div>

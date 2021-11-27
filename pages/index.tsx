@@ -19,7 +19,11 @@ const Home = () => {
   });
 
   return (
-    <BodyLayout leftSide={<p>Test</p>} rightSide={<p>Test 2</p>}>
+    <BodyLayout
+      leftSide={<div></div>}
+      rightSide={<div></div>}
+      removePannelButtons
+    >
       <CreatePost paperClassName="mb-5" />
       <HomePostSection />
     </BodyLayout>
