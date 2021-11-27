@@ -1,0 +1,9 @@
+@media (max-width: 1023px) {
+  .slide-close {
+    transform: translateX(-100%);
+  }
+
+  .slide-close-right {
+    transform: translateX(100%);
+  }
+}

@@ -10,9 +10,7 @@ const BackdropBottom: React.FC<BackdropBottom> = ({ onClick }) => {
     <div
       className="bg-gray-500 opacity-0 fixed w-screen h-screen top-0 left-0 z-10"
       onClick={onClick}
-    >
-      <h1>Backdrop bottom</h1>
-    </div>
+    ></div>
   );
 
   return ReactDOM.createPortal(

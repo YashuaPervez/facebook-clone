@@ -1,13 +1,14 @@
 import React from "react";
 
 // Components
-import Navigation from "../components/UI/Navigation";
-import UserList from "../components/User/UserList";
+// import Navigation from "../components/UI/Navigation";
+// import UserList from "../components/User/UserList";
 import CreatePost from "../components/Post/CreatePost";
 import HomePostSection from "../components/Post/HomePostSection";
+import BodyLayout from "../components/BodyLayout";
 
 //
-import friends from "../data/friends";
+// import friends from "../data/friends";
 import useAuth from "../utils/hooks/useAuth";
 
 const Home = () => {
@@ -18,14 +19,10 @@ const Home = () => {
   });
 
   return (
-    <div className="flex gap-4">
-      <div className="w-72">{/* <Navigation /> */}</div>
-      <div className="flex-1">
-        <CreatePost paperClassName="mb-5" />
-        <HomePostSection />
-      </div>
-      <div className="w-72">{/* <UserList users={friends} /> */}</div>
-    </div>
+    <BodyLayout leftSide={<p>Test</p>} rightSide={<p>Test 2</p>}>
+      <CreatePost paperClassName="mb-5" />
+      <HomePostSection />
+    </BodyLayout>
   );
 };
 
