@@ -3,6 +3,7 @@ import { useAppSelector } from "../../../utils/hooks/redux-store";
 
 // Components
 import PostItem from "./item";
+import LoaderBlock from "../../UI/Loader/LoaderBlock";
 
 //
 import { Post } from "../../../typeDefs";
@@ -37,12 +38,12 @@ const PostList: React.FC<PostListProps> = ({
       </div>
       {moreAvailable && !moreLoading && (
         <div className="mt-5">
-          <button className="text-blue-500" onClick={onShowMorePosts}>
+          <button className="text-primary-main" onClick={onShowMorePosts}>
             Show More Posts
           </button>
         </div>
       )}
-      {moreLoading && <p className="mt-5">Loading...</p>}
+      {moreLoading && <LoaderBlock />}
     </>
   );
 };

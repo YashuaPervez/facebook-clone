@@ -13,6 +13,8 @@ import UploadPreview from "../../UI/UploadPreview";
 //
 import { createPostSchema } from "../../../utils/schemas/postScheme";
 import { createPostMutation } from "../../../utils/queries/postQueries";
+import { Loading } from "../../icons";
+import { colors } from "../../../styles/colors";
 
 type CreatePostProps = {
   paperClassName?: string;
@@ -92,8 +94,10 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
         </form>
       </FormProvider>
       {loading && (
-        <div className="absolute h-full w-full top-0 left-0 bg-gray-500 opacity-50 flex items-center justify-center">
-          <span className="text-white text-lg font-semibold">Loading...</span>
+        <div className="absolute h-full w-full top-0 left-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+          <span className="block animate-spin">
+            <Loading size={5} color={colors.primary.main} />
+          </span>
         </div>
       )}
     </Paper>

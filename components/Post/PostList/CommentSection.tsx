@@ -14,6 +14,8 @@ import {
   getPostCommentsQuery,
 } from "../../../utils/queries/commentQueries";
 import { Comment } from "../../../typeDefs";
+import { Loading } from "../../icons";
+import { colors } from "../../../styles/colors";
 
 type CommentSectionProps = {
   comments: {
@@ -106,9 +108,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
               </IconButton>
             </div>
             {createCommentLoader && (
-              <div className="absolute top-0 left-0 h-full w-full bg-gray-500 opacity-50 flex items-center justify-center">
-                <span className="text-white text-lg font-semibold">
-                  Posting Comment...
+              <div className="absolute top-0 left-0 h-full w-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
+                <span className="block animate-spin">
+                  <Loading size={5} color={colors.primary.main} />
                 </span>
               </div>
             )}
@@ -142,7 +144,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       {moreAvailable && (
         <div className="mt-3">
           <button
-            className="text-blue-500 cursor-pointer"
+            className="text-primary-main cursor-pointer"
             onClick={showMoreHandler}
           >
             Show More
