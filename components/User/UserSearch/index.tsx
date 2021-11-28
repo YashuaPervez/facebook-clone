@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 //
 import { Search } from "../../icons";
+import { colors } from "../../../styles/colors";
 
 type UserSearchProps = {
   block?: boolean;
@@ -29,7 +30,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ block = false }) => {
 
   return (
     <form onSubmit={onSearchHandler}>
-      <div className="h-10 border border-blue-400 flex items-strech rounded-full overflow-hidden">
+      <div className="h-10 border border-primary-main flex items-strech rounded-full overflow-hidden">
         <input
           className={`outline-none px-4 text-sm flex-1 lg:flex-grow ${
             block ? "flex-1" : "w-36 focus:w-60 transition-all"
@@ -38,7 +39,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ block = false }) => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <button className="w-12 bg-white flex items-center justify-center">
-          <Search size={5.2} color="#60A5FA" />
+          <Search size={5.2} color={colors.primary.main} />
         </button>
       </div>
     </form>

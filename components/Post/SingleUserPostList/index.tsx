@@ -47,6 +47,7 @@ const SingleUserPostList: React.FC<SingleUserPostListType> = ({
       setPosts((prev) => [...prev, ...newPosts]);
       setMoreAvailable(newMoreAvailable);
       setMoreLoadiong(false);
+      setCurrentPage((prev) => prev + 1);
     }
   }, [loading, error, data]);
 

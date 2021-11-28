@@ -15,6 +15,7 @@ import IconButton from "../../UI/IconButton";
 //
 import { More, Search } from "../../icons";
 import { logout } from "../../../store/slices/userSlice";
+import { colors } from "../../../styles/colors";
 
 const Navbar = () => {
   const user = useAppSelector((state) => state?.user?.user);
@@ -30,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-blue-400 shadow-md relative">
+    <header className="bg-primary-main shadow-md relative">
       <Container>
         <div className="h-16 flex items-center ">
           <Link href="/">
@@ -44,7 +45,7 @@ const Navbar = () => {
               color="white"
               onClick={() => setSearchOpen((prev) => !prev)}
             >
-              <Search size={4.6} color="blue" />
+              <Search size={4.6} color={colors.primary.main} />
             </IconButton>
           </div>
           <div
@@ -85,14 +86,14 @@ const Navbar = () => {
                     },
                   ]}
                 >
-                  <More size={4.6} />
+                  <More size={4.6} color={colors.primary.dark} />
                 </IconButton>
               </div>
             </>
           )}
         </div>
       </Container>
-    </div>
+    </header>
   );
 };
 
