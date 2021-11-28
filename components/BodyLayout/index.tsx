@@ -11,6 +11,8 @@ type BodyLayoutProps = {
   leftSide: React.ReactNode;
   rightSide: React.ReactNode;
   removePannelButtons?: boolean;
+  removeRightPannelButton?: boolean;
+  removeLeftPannelButton?: boolean;
 };
 
 const BodyLayout: React.FC<BodyLayoutProps> = ({
@@ -18,6 +20,8 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
   leftSide,
   rightSide,
   removePannelButtons,
+  removeRightPannelButton,
+  removeLeftPannelButton,
 }) => {
   const [leftPanelOpen, setLeftPanelOpen] = useState<boolean>(false);
   const [rightPanelOpen, setRightPanelOpen] = useState<boolean>(false);
@@ -54,7 +58,7 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
             }`}
           >
             {leftSide}
-            {!removePannelButtons && (
+            {!removePannelButtons && !removeRightPannelButton && (
               <button
                 className={`right-0 translate-x-full rounded-r-lg ${commonButtonClasses}`}
                 onClick={toggleLeftPanel}
@@ -74,7 +78,7 @@ const BodyLayout: React.FC<BodyLayoutProps> = ({
             }`}
           >
             {rightSide}
-            {!removePannelButtons && (
+            {!removePannelButtons && !removeLeftPannelButton && (
               <button
                 className={`left-0 -translate-x-full rounded-l-lg ${commonButtonClasses}`}
                 onClick={toggleRightPanel}

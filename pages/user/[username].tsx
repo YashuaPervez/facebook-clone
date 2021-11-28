@@ -3,11 +3,12 @@ import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
 // Components
+import BodyLayout from "../../components/BodyLayout";
 import UserHero from "../../components/User/UserHero";
 import UserIntro from "../../components/User/UserIntro";
 import UserGallery from "../../components/User/UserGallery";
 import CreatePost from "../../components/Post/CreatePost";
-import PostList from "../../components/Post/PostList";
+import SingleUserPostList from "../../components/Post/SingleUserPostList";
 
 //
 import { User } from "../../typeDefs";
@@ -67,30 +68,36 @@ const SingleUser: React.FC<UserProps> = () => {
           }}
         />
       </div>
-      <div className="flex gap-4">
-        <div className="w-72">
-          <UserIntro
-            paperClassName="mb-3"
-            user={{
-              location: user?.profile.location,
-              workPlace: user?.profile.workPlace,
-            }}
-          />
-          <UserGallery
-            paperClassName="mb-3"
-            images={
-              user?.wallPosts
-                .filter((post) => post.imageURL)
-                .map((post) => post?.imageURL || "") || []
-            }
-          />
-        </div>
-        <div className="flex-1">
-          <CreatePost paperClassName="mb-5" />
-          <PostList posts={user?.wallPosts} />
-        </div>
-        <div className="w-72" />
-      </div>
+      <BodyLayout
+        leftSide={
+          <>
+            <UserIntro
+              paperClassName="mb-3"
+              user={{
+                location: user?.profile.location,
+                workPlace: user?.profile.workPlace,
+              }}
+            />
+            <UserGallery
+              paperClassName="mb-3"
+              images={
+                user?.wallPosts.posts
+                  .filter((post) => post.imageURL)
+                  .map((post) => post?.imageURL || "") || []
+              }
+            />
+          </>
+        }
+        rightSide={<div></div>}
+        removeLeftPannelButton
+      >
+        <CreatePost paperClassName="mb-5" />
+        <SingleUserPostList
+          initialPosts={user?.wallPosts.posts}
+          initialMoreAvailable={user?.wallPosts.moreAvailable}
+          userId={user.id}
+        />
+      </BodyLayout>
     </>
   );
 };

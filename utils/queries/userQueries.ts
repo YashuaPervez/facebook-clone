@@ -71,43 +71,46 @@ export const getUserByUsernameQuery = gql`
         location
       }
       wallPosts {
-        id
-        title
-        imageURL
-        createdAt
-        liked
-        author {
+        moreAvailable
+        posts {
           id
-          username
-          profile {
-            displayName
-            imageURL
-          }
-        }
-        comments {
-          moreAvailable
-          comments {
+          title
+          imageURL
+          createdAt
+          liked
+          author {
             id
-            text
+            username
+            profile {
+              displayName
+              imageURL
+            }
+          }
+          comments {
+            moreAvailable
+            comments {
+              id
+              text
+              createdAt
+              author {
+                id
+                username
+                profile {
+                  displayName
+                  imageURL
+                }
+              }
+            }
+          }
+          likes {
             createdAt
-            author {
+            liker {
               id
               username
               profile {
                 displayName
                 imageURL
               }
-            }
-          }
-        }
-        likes {
-          createdAt
-          liker {
-            id
-            username
-            profile {
-              displayName
-              imageURL
             }
           }
         }

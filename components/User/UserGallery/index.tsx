@@ -15,7 +15,7 @@ const UserGallery: React.FC<UserGalleryProps> = ({
   images,
 }) => {
   return (
-    <Paper className={paperClassName}>
+    <Paper className={paperClassName} removeBorderMobile>
       <div className="flex items-center">
         <h2 className="text-xl font-bold mb-3 flex-1">Image</h2>
         <Link href="/">

@@ -19,7 +19,7 @@ const UserIntro: React.FC<UserIntroProps> = ({ paperClassName, user }) => {
   const iconWrapper = "mr-3";
 
   return (
-    <Paper className={paperClassName}>
+    <Paper className={paperClassName} removeBorderMobile>
       <h2 className="text-xl font-bold mb-4">Intro</h2>
       <ul>
         <li className={`${listItem}`}>
