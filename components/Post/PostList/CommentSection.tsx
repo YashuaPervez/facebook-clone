@@ -101,8 +101,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           <div className="flex items-center relative rounded overflow-hidden">
             <Input id="comment" placeholder="Comment" inline />
             <div>
-              <IconButton type="submit">
-                <PaperPlane size={4} color={"#fff"} />
+              <IconButton type="submit" size={"sm"}>
+                <PaperPlane size={3.6} color={"#fff"} />
               </IconButton>
             </div>
             {createCommentLoader && (

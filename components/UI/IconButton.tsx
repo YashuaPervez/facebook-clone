@@ -31,7 +31,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   const menuExists = menu && menu.length;
 
   let colorClasses =
-    "bg-blue-400 border border-blue-500 hover:bg-blue-500 hover:border-blue-600";
+    "bg-primary-main border-primary-dark hover:bg-primary-semidark";
   let sizeClasses = "h-12 w-12";
 
   switch (color) {
@@ -66,7 +66,7 @@ const IconButton: React.FC<IconButtonProps> = ({
     <div className={`relative ${menuOpen ? "z-10" : "z-0"}`}>
       <button
         type={type}
-        className={`rounded-full flex items-center justify-center ${sizeClasses} ${colorClasses} ${className}`}
+        className={`rounded-full flex items-center justify-center border ${sizeClasses} ${colorClasses} ${className}`}
         onClick={buttonClickHandler}
       >
         <span className="text-white text-sm font-semibold">{children}</span>

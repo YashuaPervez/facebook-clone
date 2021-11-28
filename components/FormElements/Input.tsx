@@ -22,7 +22,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const { register } = useFormContext();
   const commonClasses =
-    "bg-white border border-gray-200 w-full outline-none py-2 px-3 rounded focus:border-blue-400";
+    "bg-white border border-gray-200 w-full outline-none py-2 px-3 rounded focus:border-primary-main";
 
   if (textarea) {
     return (
