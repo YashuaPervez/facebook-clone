@@ -16,6 +16,7 @@ import { loginSchema } from "../../../utils/schemas/authSchema";
 import { loginMutation } from "../../../utils/queries/authQueries";
 import { login as loginAction } from "../../../store/slices/userSlice";
 import { User } from "../../../typeDefs";
+import { addNotification } from "../../../store/slices/notificationSlice";
 
 type FormValues = {
   email: string;
@@ -58,7 +59,18 @@ const LoginForm = () => {
       );
       push("/");
     } catch (e) {
-      console.log("error >>", e);
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              text: e.message,
+              title: "Failed to Login",
+            },
+          })
+        );
+      }
     }
     setLoading(false);
   };

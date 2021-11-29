@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
+import { useAppDispatch } from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -13,6 +14,8 @@ import Button from "../../UI/Button";
 //
 import { signupSchema } from "../../../utils/schemas/authSchema";
 import { signupMutation } from "../../../utils/queries/authQueries";
+import { addNotification } from "../../../store/slices/notificationSlice";
+import { login } from "../../../store/slices/userSlice";
 
 type FormValues = {
   username: string;
@@ -22,6 +25,8 @@ type FormValues = {
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const [signup] = useMutation(signupMutation);
   const { push } = useRouter();
@@ -46,10 +51,29 @@ const SignupForm = () => {
       });
 
       const token = response.data.signup.token;
+
+      const user = response.data.signup.user as User;
       document.cookie = `fb-clone-auth-token=${token}`;
+      dispatch(
+        login({
+          token,
+          user,
+        })
+      );
       push("/");
     } catch (e) {
-      console.log("error >>", e);
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              text: e.message,
+              title: "Failed to Signup",
+            },
+          })
+        );
+      }
     }
     setLoading(false);
   };

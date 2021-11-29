@@ -64,6 +64,9 @@ export const signupMutation = gql`
   mutation Signup($email: String!, $password: String!, $username: String!) {
     signup(data: { email: $email, password: $password, username: $username }) {
       token
+      user{
+        ${userFullProfile}
+      }
     }
   }
 `;
