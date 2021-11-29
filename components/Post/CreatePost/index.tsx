@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useMutation } from "@apollo/client";
+import { useAppDispatch } from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -15,6 +16,7 @@ import { createPostSchema } from "../../../utils/schemas/postScheme";
 import { createPostMutation } from "../../../utils/queries/postQueries";
 import { Loading } from "../../icons";
 import { colors } from "../../../styles/colors";
+import { addNotification } from "../../../store/slices/notificationSlice";
 
 type CreatePostProps = {
   paperClassName?: string;
@@ -31,6 +33,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [createPost] = useMutation(createPostMutation);
+
+  const dispatch = useAppDispatch();
 
   const form = useForm<FormValues>({
     resolver: yupResolver(createPostSchema),
@@ -54,8 +58,26 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
       reset();
       setPreviewURL("");
       setSelectedFile(null);
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            type: "success",
+            title: "Post created successfully",
+          },
+        })
+      );
     } catch (e) {
-      console.log("error >>", e);
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            type: "error",
+            title: "Failed to create post",
+            text: e?.message,
+          },
+        })
+      );
     }
     setLoading(false);
   };
