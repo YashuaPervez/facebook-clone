@@ -36,7 +36,7 @@ const CoverImageChanger: React.FC<CoverImageChangerProps> = () => {
   };
 
   return (
-    <Paper>
+    <Paper removeBorderMobile>
       <h4>Cover Image</h4>
       <input
         type="file"

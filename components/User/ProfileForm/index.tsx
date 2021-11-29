@@ -76,9 +76,8 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
   };
 
   return (
-    <Paper>
+    <Paper title="Update Profile">
       <FormProvider {...form}>
-        <Heading>Update Profile</Heading>
         <form onSubmit={handleSubmit(updateProfileHandler)}>
           <Input
             id="displayName"

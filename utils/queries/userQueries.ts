@@ -23,6 +23,9 @@ export const updateProfileMutation = gql`
         imageURL
         about
         interests
+        location
+        workPlace
+        coverImageURL
       }
     }
   }
