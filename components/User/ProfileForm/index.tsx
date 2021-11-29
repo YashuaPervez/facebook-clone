@@ -20,6 +20,7 @@ import { updateProfileSchema } from "../../../utils/schemas/userSchema";
 import { updateProfileMutation } from "../../../utils/queries/userQueries";
 import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
 import { addNotification } from "../../../store/slices/notificationSlice";
+import { Profile } from "../../../typeDefs";
 
 type ProfileFormProps = {};
 
@@ -54,7 +55,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     data
   ) => {
     setLoading(true);
-    const updateObject: any = {
+    const updateObject: Profile = {
       ...data,
     };
     if (tags.length !== 0)

@@ -5,8 +5,11 @@ import Paper from "../../UI/Paper";
 import Chip from "../../UI/Chip";
 import Avatar from "../../UI/Avatar";
 
+//
+import { User } from "../../../typeDefs";
+
 type UserCardItemProps = {
-  user: any;
+  user: User;
 };
 
 const UserCardItem: React.FC<UserCardItemProps> = ({ user }) => {

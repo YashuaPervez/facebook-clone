@@ -75,7 +75,7 @@ const UserCardList: React.FC<UserCardListProps> = ({ query }) => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        users.map((user: any) => <UserCardItem user={user} key={user.id} />)
+        users.map((user: User) => <UserCardItem user={user} key={user.id} />)
       )}
       {moreAvailable && (
         <button className="text-primary-main" onClick={showMoreResultsHandler}>
