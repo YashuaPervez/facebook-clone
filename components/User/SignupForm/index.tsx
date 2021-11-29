@@ -16,6 +16,7 @@ import { signupSchema } from "../../../utils/schemas/authSchema";
 import { signupMutation } from "../../../utils/queries/authQueries";
 import { addNotification } from "../../../store/slices/notificationSlice";
 import { login } from "../../../store/slices/userSlice";
+import { User } from "../../../typeDefs";
 
 type FormValues = {
   username: string;

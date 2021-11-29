@@ -68,16 +68,18 @@ const CreatePost: React.FC<CreatePostProps> = ({ paperClassName }) => {
         })
       );
     } catch (e) {
-      dispatch(
-        addNotification({
-          notification: {
-            id: new Date().getTime(),
-            type: "error",
-            title: "Failed to create post",
-            text: e?.message,
-          },
-        })
-      );
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              title: "Failed to create post",
+              text: e.message,
+            },
+          })
+        );
+      }
     }
     setLoading(false);
   };

@@ -74,7 +74,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       {menuExists && menuOpen ? (
         <ul className="absolute right-0 bg-white flex flex-col w-56 py-2 rounded mt-1 shadow-lg">
           {menu.map((item) => (
-            <Link href={item.link}>
+            <Link href={item.link} key={item.link}>
               <a>
                 <li
                   className="py-2 px-4 hover:bg-gray-100"

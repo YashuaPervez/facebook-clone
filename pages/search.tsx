@@ -15,7 +15,9 @@ const Search = () => {
       <div className="mb-2">
         <UserSearch block />
       </div>
-      {urlQuery && <div className="mb-6">Showing results for "{urlQuery}"</div>}
+      {urlQuery && (
+        <div className="mb-6">Showing results for {`"${urlQuery}"`}</div>
+      )}
       <UserCardList query={urlQuery as string} />
     </BodyLayout>
   );
