@@ -33,14 +33,17 @@ export const updateProfileMutation = gql`
 
 export const searchUsersQuery = gql`
   query SearchUser($pageNo: Int!, $query: String!) {
-    searchUsers(resultsPerPage: 8, pageNo: $pageNo, query: $query) {
-      id
-      username
-      profile {
-        displayName
-        about
-        imageURL
-        interests
+    searchUsers(resultsPerPage: 4, pageNo: $pageNo, query: $query) {
+      moreAvailable
+      users {
+        id
+        username
+        profile {
+          displayName
+          about
+          imageURL
+          interests
+        }
       }
     }
   }

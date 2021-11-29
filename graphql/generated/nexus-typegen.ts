@@ -102,6 +102,10 @@ export interface NexusGenObjects {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  UsersWithMoreAvailable: { // root type
+    moreAvailable: boolean; // Boolean!
+    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -175,7 +179,7 @@ export interface NexusGenFieldTypes {
     getUserByUsername: NexusGenRootTypes['User']; // User!
     getUserPosts: NexusGenRootTypes['PostsWithMoreAvailable']; // PostsWithMoreAvailable!
     me: NexusGenRootTypes['User']; // User!
-    searchUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    searchUsers: NexusGenRootTypes['UsersWithMoreAvailable']; // UsersWithMoreAvailable!
   }
   User: { // field return type
     createdAt: string; // String!
@@ -189,6 +193,10 @@ export interface NexusGenFieldTypes {
   UserWithToken: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
+  }
+  UsersWithMoreAvailable: { // field return type
+    moreAvailable: boolean; // Boolean!
+    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
 }
 
@@ -253,7 +261,7 @@ export interface NexusGenFieldTypeNames {
     getUserByUsername: 'User'
     getUserPosts: 'PostsWithMoreAvailable'
     me: 'User'
-    searchUsers: 'User'
+    searchUsers: 'UsersWithMoreAvailable'
   }
   User: { // field return type name
     createdAt: 'String'
@@ -267,6 +275,10 @@ export interface NexusGenFieldTypeNames {
   UserWithToken: { // field return type name
     token: 'String'
     user: 'User'
+  }
+  UsersWithMoreAvailable: { // field return type name
+    moreAvailable: 'Boolean'
+    users: 'User'
   }
 }
 

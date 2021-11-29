@@ -84,7 +84,7 @@ type Query {
   getUserByUsername(username: String!): User!
   getUserPosts(pageNumber: Int!, userId: Int!): PostsWithMoreAvailable!
   me: User!
-  searchUsers(pageNo: Int!, query: String!, resultsPerPage: Int!): [User]!
+  searchUsers(pageNo: Int!, query: String!, resultsPerPage: Int!): UsersWithMoreAvailable!
 }
 
 input SignupUserInputs {
@@ -117,4 +117,9 @@ type User {
 type UserWithToken {
   token: String!
   user: User!
+}
+
+type UsersWithMoreAvailable {
+  moreAvailable: Boolean!
+  users: [User]!
 }

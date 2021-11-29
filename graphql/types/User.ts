@@ -18,6 +18,7 @@ import {
 } from "../utils/function";
 import { PostsWithMoreAvailable } from "./Post";
 import { Profile } from "./Profile";
+import { Prisma } from ".prisma/client";
 
 export const User = objectType({
   name: "User",
@@ -76,6 +77,14 @@ export const UserWithToken = objectType({
   definition(t) {
     t.nonNull.string("token");
     t.nonNull.field("user", { type: User });
+  },
+});
+
+export const UsersWithMoreAvailable = objectType({
+  name: "UsersWithMoreAvailable",
+  definition(t) {
+    t.nonNull.boolean("moreAvailable");
+    t.nonNull.list.field("users", { type: User });
   },
 });
 
@@ -168,8 +177,8 @@ export const UserQuery = extendType({
     /* ================
       SEARCH USER
       ================= */
-    t.nonNull.list.field("searchUsers", {
-      type: User,
+    t.nonNull.field("searchUsers", {
+      type: UsersWithMoreAvailable,
       args: {
         resultsPerPage: nonNull(intArg()),
         pageNo: nonNull(intArg()),
@@ -190,44 +199,51 @@ export const UserQuery = extendType({
         const toSkip = resultsPerPage * (pageNo - 1);
 
         //Searching for users
+
+        const where: Prisma.UserWhereInput = {
+          OR: [
+            {
+              username: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+            {
+              profile: {
+                OR: [
+                  {
+                    displayName: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    about: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        };
+
         const users = await ctx.prisma.user.findMany({
           skip: toSkip,
           take: resultsPerPage,
-          where: {
-            OR: [
-              {
-                username: {
-                  contains: query,
-                  mode: "insensitive",
-                },
-              },
-              {
-                profile: {
-                  OR: [
-                    {
-                      displayName: {
-                        contains: query,
-                        mode: "insensitive",
-                      },
-                    },
-                    {
-                      about: {
-                        contains: query,
-                        mode: "insensitive",
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
+          where,
         });
+        const totalUsers = await ctx.prisma.user.count({ where });
 
-        return users.map((user) => ({
-          ...user,
-          createdAt: user.createdAt.getTime().toString(),
-          updatedAt: user.updatedAt.getTime().toString(),
-        }));
+        return {
+          moreAvailable: totalUsers - toSkip - resultsPerPage > 0,
+          users: users.map((user) => ({
+            ...user,
+            createdAt: user.createdAt.getTime().toString(),
+            updatedAt: user.updatedAt.getTime().toString(),
+          })),
+        };
       },
     });
 
@@ -240,6 +256,10 @@ export const UserQuery = extendType({
         const user = await ctx.prisma.user.findUnique({
           where: { id: userId || 0 },
         });
+
+        if (!user) {
+          throw new Error("User not found");
+        }
 
         return {
           ...user,
