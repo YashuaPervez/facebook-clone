@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ApolloProvider client={apolloClient}>
         <div id="backdrop-bottom-placeholder"></div>
         <div id="backdrop-placeholder"></div>
+        <div id="notifications-placeholder"></div>
         <Layout>
           <Component {...pageProps} />
         </Layout>

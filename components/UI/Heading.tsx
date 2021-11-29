@@ -4,14 +4,16 @@ type HeadingProps = {
   children: React.ReactNode;
   element: "h1" | "h2" | "h3" | "h4";
   style: "main" | "paperTitle" | "smallTitle";
+  removeBottomSpacing?: boolean;
 };
 
 const Heading: React.FC<HeadingProps> = ({
   children,
   element = "h1",
   style,
+  removeBottomSpacing,
 }) => {
-  let headingClasses = "mb-4 ";
+  let headingClasses = `${!removeBottomSpacing ? "mb-4" : ""} `;
 
   switch (style) {
     case "main":

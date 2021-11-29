@@ -52,3 +52,10 @@ export interface Like {
   liker: User;
   post: Post;
 }
+
+export interface Notification {
+  id: number;
+  title?: string;
+  text?: string;
+  type: "success" | "warning" | "error";
+}

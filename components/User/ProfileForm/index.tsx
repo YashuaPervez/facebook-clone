@@ -19,6 +19,7 @@ import TagList, { Tag } from "../../FormElements/TagList";
 import { updateProfileSchema } from "../../../utils/schemas/userSchema";
 import { updateProfileMutation } from "../../../utils/queries/userQueries";
 import { updateProfile as updateProfileAction } from "../../../store/slices/userSlice";
+import { addNotification } from "../../../store/slices/notificationSlice";
 
 type ProfileFormProps = {};
 
@@ -67,6 +68,15 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
       dispatch(
         updateProfileAction({
           profile: newProfile,
+        })
+      );
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            title: "Profile Updated Successfully",
+            type: "success",
+          },
         })
       );
     } catch (e) {
