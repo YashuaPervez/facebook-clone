@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useMutation, useLazyQuery } from "@apollo/client";
+import { useAppDispatch } from "../../../utils/hooks/redux-store";
 
 // Components
 import Input from "../../FormElements/Input";
@@ -16,6 +17,7 @@ import {
 import { Comment } from "../../../typeDefs";
 import { Loading } from "../../icons";
 import { colors } from "../../../styles/colors";
+import { addNotification } from "../../../store/slices/notificationSlice";
 
 type CommentSectionProps = {
   comments: {
@@ -39,6 +41,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const [moreAvailable, setMoreAvailable] = useState<boolean>(c.moreAvailable);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const dispatch = useAppDispatch();
+
   const form = useForm<FormValues>();
   const { handleSubmit, reset } = form;
 
@@ -56,8 +60,28 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         },
       });
       setComments((prev) => [response.data.createComment, ...prev]);
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            type: "success",
+            title: "Comment posted successfully",
+          },
+        })
+      );
     } catch (e) {
-      console.log("error >>", e);
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              title: "Failed to post comment",
+              text: e.message,
+            },
+          })
+        );
+      }
     }
     reset();
     setCreateCommentLoader(false);

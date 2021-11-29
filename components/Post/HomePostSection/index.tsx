@@ -32,6 +32,7 @@ const HomePostSection = () => {
           pageNumber: currentPage + 1,
         },
       });
+      setCurrentpage((prev) => prev + 1);
     }
   };
 
