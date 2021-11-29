@@ -80,7 +80,18 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         })
       );
     } catch (e) {
-      console.log("error >>", e);
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              title: "Failed to update profile",
+              type: "error",
+              text: e.message,
+            },
+          })
+        );
+      }
     }
     setLoading(false);
   };

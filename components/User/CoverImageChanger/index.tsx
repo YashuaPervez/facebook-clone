@@ -1,6 +1,9 @@
 import { ChangeEventHandler, useRef } from "react";
 import { useMutation } from "@apollo/client";
-import { useAppSelector } from "../../../utils/hooks/redux-store";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -8,12 +11,16 @@ import { Image } from "../../icons";
 
 //
 import { uploadCoverImageMutation } from "../../../utils/queries/userQueries";
+import { addNotification } from "../../../store/slices/notificationSlice";
+import { updateProfile } from "../../../store/slices/userSlice";
 
 type CoverImageChangerProps = {};
 
 const CoverImageChanger: React.FC<CoverImageChangerProps> = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const user = useAppSelector((state) => state.user.user);
+
+  const dispatch = useAppDispatch();
 
   const [uploadCoverImage] = useMutation(uploadCoverImageMutation);
 
@@ -29,9 +36,36 @@ const CoverImageChanger: React.FC<CoverImageChangerProps> = () => {
           image: file,
         },
       });
-      console.log("response >>", response);
-    } catch (error) {
-      console.log("error >>", error);
+
+      dispatch(
+        updateProfile({
+          profile: {
+            coverImageURL: response.data.updateCoverImage,
+          },
+        })
+      );
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            type: "success",
+            title: "Cover Image updated successfully",
+          },
+        })
+      );
+    } catch (e) {
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              title: "Failed to update cover image",
+              text: e.message,
+            },
+          })
+        );
+      }
     }
   };
 

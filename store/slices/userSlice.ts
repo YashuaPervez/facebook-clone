@@ -14,9 +14,14 @@ export type LoginActionPayload = {
   user: SliceUser;
   token: string;
 };
-export type UpdateProfileActionPayload = {
-  profile: Profile;
-};
+
+interface OptionalProfile extends Omit<Profile, "displayName"> {
+  displayName?: string;
+}
+
+export interface UpdateProfileActionPayload {
+  profile: OptionalProfile;
+}
 
 const initialState: UserState = {
   isLoggedIn: false,
@@ -50,7 +55,10 @@ const userSlice = createSlice({
       action: PayloadAction<UpdateProfileActionPayload>
     ) => {
       if (state.user) {
-        state.user.profile = action.payload.profile;
+        state.user.profile = {
+          ...state.user.profile,
+          ...action.payload.profile,
+        };
       }
     },
   },

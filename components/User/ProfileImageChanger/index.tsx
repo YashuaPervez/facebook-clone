@@ -1,6 +1,9 @@
 import { useRef } from "react";
 import { useMutation } from "@apollo/client";
-import { useAppSelector } from "../../../utils/hooks/redux-store";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "../../../utils/hooks/redux-store";
 
 // Components
 import Paper from "../../UI/Paper";
@@ -9,6 +12,8 @@ import Avatar from "../../UI/Avatar";
 //
 import { Image } from "../../icons";
 import { uploadProfilePictureMutation } from "../../../utils/queries/userQueries";
+import { addNotification } from "../../../store/slices/notificationSlice";
+import { updateProfile } from "../../../store/slices/userSlice";
 
 type ProfileImageChangerProps = {};
 
@@ -16,6 +21,7 @@ const ProfileImageChanger: React.FC<ProfileImageChangerProps> = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadProfilePicture] = useMutation(uploadProfilePictureMutation);
   const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
 
   const openFilePicker = () => {
     fileInputRef.current?.click();
@@ -34,9 +40,35 @@ const ProfileImageChanger: React.FC<ProfileImageChangerProps> = () => {
         },
       });
 
-      console.log("response >>", response);
+      dispatch(
+        updateProfile({
+          profile: {
+            imageURL: response.data.updateProfilePicture,
+          },
+        })
+      );
+      dispatch(
+        addNotification({
+          notification: {
+            id: new Date().getTime(),
+            type: "success",
+            title: "Profile Image updated successfully",
+          },
+        })
+      );
     } catch (e) {
-      console.log("error >>", e);
+      if (e instanceof Error) {
+        dispatch(
+          addNotification({
+            notification: {
+              id: new Date().getTime(),
+              type: "error",
+              title: "Failed to update profile image",
+              text: e.message,
+            },
+          })
+        );
+      }
     }
   };
 
