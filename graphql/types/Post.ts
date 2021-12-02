@@ -81,7 +81,7 @@ export const Post = objectType({
         });
 
         return {
-          comments: comments.map((com) => ({
+          comments: comments.map((com: any) => ({
             ...com,
             createdAt: com.createdAt.getTime().toString(),
             updatedAt: com.updatedAt.getTime().toString(),
