@@ -122,7 +122,7 @@ export const CommentQuery = extendType({
 
         return {
           moreAvailable: totalComments - toSkip - commentsPerPage > 0,
-          comments: comments.map((com) => ({
+          comments: comments.map((com: any) => ({
             ...com,
             createdAt: com.createdAt.getTime().toString(),
             updatedAt: com.updatedAt.getTime().toString(),
