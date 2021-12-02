@@ -5,7 +5,7 @@
     "dev": "next dev",
     "start": "next start -p $PORT",
     "build": "next build",
-    "heroku-postbuild": "prisma db push",
+    "heroku-postbuild": "prisma db push && npm run build",
     "lint": "next lint"
   },
   "dependencies": {
