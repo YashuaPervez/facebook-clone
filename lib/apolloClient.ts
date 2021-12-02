@@ -3,8 +3,9 @@ import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 import { findCookie } from "../utils/functions";
 
+const uri = `${process.env.SERVER_URL}/api/graphql`;
 const uploadLink = createUploadLink({
-  uri: "http://localhost:3000/api/graphql",
+  uri,
 });
 
 const authLink = setContext((_, { headers }) => {
